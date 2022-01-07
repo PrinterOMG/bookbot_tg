@@ -30,11 +30,11 @@ async def bot_start(message: types.Message):
 @dp.callback_query_handler(language_callback.filter(action="reg"))
 async def language_choose(call: CallbackQuery, callback_data: dict):
     lang_id = callback_data["id"]
-    ref = callback_data["ref"]
+    ref_id = callback_data["ref"]
 
-    users_worker.register_new_user(call.from_user.id, call.from_user.full_name, lang_id, ref)
-    if ref != "NULL":
-        referral_worker.add_to_register_count(ref)
+    users_worker.register_new_user(call.from_user.id, call.from_user.full_name, lang_id, ref_id)
+    if ref_id != "NULL":
+        referral_worker.add_to_register_count(ref_id)
 
     text = users_worker.get_text_on_user_language(call.from_user.id, "mainMenu")
 

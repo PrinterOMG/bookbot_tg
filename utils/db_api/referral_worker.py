@@ -18,7 +18,7 @@ class ReferralWorker(DatabaseCore):
             return str(records[0]["referralId"])
         return None
 
-    def add_to_register_count(self, code):
-        sql = f"UPDATE BookBotAdmin_referrals SET registerCount=registerCount+1 WHERE code='{code}'"
+    def add_to_register_count(self, ref_id):
+        sql = f"UPDATE BookBotAdmin_referrals SET registerCount=registerCount+1 WHERE referralId={ref_id}"
 
         self.send_query(sql)
