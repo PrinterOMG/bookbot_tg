@@ -10,4 +10,4 @@ class LanguagesWorker(DatabaseCore):
     def get_text(self, language_id, args):
         sql = f"SELECT {args} FROM BookBotAdmin_languages WHERE languageId={language_id}"
 
-        return self.send_query(sql)
+        return self.send_query(sql)[0]

@@ -1,3 +1,5 @@
+from typing import Union
+
 from pymysql.cursors import DictCursor
 import pymysql
 from contextlib import closing
@@ -10,7 +12,7 @@ class DatabaseCore:
         self.host = host
         self.db_name = db_name
 
-    def send_query(self, sql, *args):
+    def send_query(self, sql: str, *args) -> Union[list, tuple]:
         with closing(pymysql.connect(host=self.host, user=self.username, password=self.password, db=self.db_name, cursorclass=DictCursor)) as conn:
             with conn.cursor() as cursor:
                 cursor.execute(sql, args)

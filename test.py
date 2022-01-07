@@ -1,4 +1,4 @@
-from loader import languages_worker, users_worker
+from loader import languages_worker, users_worker, referral_worker
 
 
-print(users_worker.get_text_on_user_language(688305373, "mainMenu"))
+print(referral_worker.get_id_by_code("test2"))
