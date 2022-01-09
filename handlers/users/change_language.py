@@ -1,13 +1,13 @@
 from aiogram.types import CallbackQuery
 
-from loader import dp, users_worker, languages_worker
-from data.messages import choose_language_text
-from keyboards.inline import get_languages_keyboard, language_callback, get_main_keyboard
+from loader import dp, users_worker, languages_worker, settings_worker
+from keyboards.inline import get_languages_keyboard, get_main_keyboard
+from keyboards.inline.callbacks import navigation_callback, language_callback
 
 
-@dp.callback_query_handler(text="to_language")
+@dp.callback_query_handler(navigation_callback.filter(to="language"))
 async def change_language_keyboard(call: CallbackQuery):
-    await call.message.edit_text(choose_language_text, reply_markup=await get_languages_keyboard("change", "NULL"))
+    await call.message.edit_text(settings_worker.get_choose_languages_text(), reply_markup=await get_languages_keyboard("change", "NULL"))
 
 
 @dp.callback_query_handler(language_callback.filter(action="change"))

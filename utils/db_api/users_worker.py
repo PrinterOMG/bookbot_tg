@@ -21,13 +21,12 @@ class UsersWorker(DatabaseCore):
 
         return self.send_query(sql)
 
-    def get_text_on_user_language(self, user_id, args):
-        sql = f"SELECT {args} FROM BookBotAdmin_languages WHERE " \
-              f"languageId=(SELECT languageId_id FROM BookBotAdmin_users WHERE userId={user_id})"
-
-        return self.send_query(sql)[0]
-
     def change_user_language(self, user_id, new_lang_id):
         sql = f"UPDATE BookBotAdmin_users SET languageId_id={new_lang_id} WHERE userId={user_id}"
 
         self.send_query(sql)
+
+    def get_balance(self, user_id):
+        sql = f"SELECT balance FROM BookBotAdmin_users WHERE userId={user_id}"
+
+        return self.send_query(sql)[0]["balance"]

@@ -1,10 +1,7 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from aiogram.utils.callback_data import CallbackData
 
 from loader import languages_worker
-
-
-language_callback = CallbackData("language", "action", "id", "ref")
+from .callbacks import language_callback
 
 
 async def get_languages_keyboard(action, ref):
