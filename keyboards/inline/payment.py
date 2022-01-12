@@ -22,7 +22,7 @@ async def get_payment_keyboard(user_id, for_subs=False, value=0, back="main"):
                 InlineKeyboardButton(text["telegramPayButton"], callback_data=payment_callback.new("topup", value, "telegram"))
             ],
             [
-                InlineKeyboardButton(text["yookassaButton"], callback_data=payment_callback.new("topup", value, "yookassa"))
+                InlineKeyboardButton(text["yookassaButton"], callback_data=payment_callback.new("topup", value, "yoomoney"))
             ],
             [
                 InlineKeyboardButton(text["paypalButton"], callback_data=payment_callback.new("topup", value, "paypal"))
