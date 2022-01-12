@@ -12,5 +12,5 @@ def strike(text):
     return result[:-1]
 
 
-print(search("books_russian.csv", "genre", 123))
+print(search("books_russian.csv", "year", 1936))
 

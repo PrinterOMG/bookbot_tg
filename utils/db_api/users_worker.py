@@ -29,4 +29,9 @@ class UsersWorker(DatabaseCore):
     def get_balance(self, user_id):
         sql = f"SELECT balance FROM BookBotAdmin_users WHERE userId={user_id}"
 
-        return self.send_query(sql)[0]["balance"]
+        return int(self.send_query(sql)[0]["balance"])
+
+    def change_balance(self, user_id, action):
+        sql = f"UPDATE BookBotAdmin_users SET balance=balance{action} WHERE userId={user_id}"
+
+        self.send_query(sql)

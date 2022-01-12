@@ -6,3 +6,4 @@ from .balance import get_balance_keyboard
 from .cancel import get_cancel_keyboard
 from .booksearch import get_search_keyboard
 from .payment import get_payment_keyboard
+from .buy_book import get_book_buy_keyboard

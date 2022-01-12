@@ -6,3 +6,5 @@ from . import promocodes
 from . import other
 from . import subscribes
 from . import balance
+from . import search
+from . import buy_book
