@@ -2,7 +2,8 @@ from aiogram.dispatcher import FSMContext
 from aiogram.types import CallbackQuery, ParseMode
 
 from loader import dp, languages_worker, users_worker
-from keyboards.inline import get_main_keyboard, get_subscribes_keyboard, get_move_keyboard, get_balance_keyboard
+from keyboards.inline import get_main_keyboard, get_subscribes_keyboard, get_move_keyboard, get_balance_keyboard, \
+    get_cancel_keyboard, get_search_keyboard
 from keyboards.inline.callbacks import navigation_callback
 from states.make_question import QuestionInput
 
@@ -43,4 +44,11 @@ async def send_question_input(call: CallbackQuery, state: FSMContext):
 
     text = languages_worker.get_text_on_user_language(call.from_user.id, "questionInput")
 
-    await call.message.edit_text(text["questionInput"])
+    await call.message.edit_text(text["questionInput"], reply_markup=await get_cancel_keyboard(call.from_user.id))
+
+
+@dp.callback_query_handler(navigation_callback.filter(to="archive"))
+async def send_archive_search(call: CallbackQuery):
+    text = languages_worker.get_text_on_user_language(call.from_user.id, "booksArchiveMenu")
+
+    await call.message.edit_text(text["booksArchiveMenu"], reply_markup=await get_search_keyboard(call.from_user.id))

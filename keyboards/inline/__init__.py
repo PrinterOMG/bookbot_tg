@@ -4,3 +4,5 @@ from .subscribes_menu import get_subscribes_keyboard
 from .move import get_move_keyboard
 from .balance import get_balance_keyboard
 from .cancel import get_cancel_keyboard
+from .booksearch import get_search_keyboard
+from .payment import get_payment_keyboard

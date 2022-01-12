@@ -5,3 +5,4 @@ from . import navigation
 from . import promocodes
 from . import other
 from . import subscribes
+from . import balance
