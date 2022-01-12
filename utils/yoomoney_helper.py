@@ -1,17 +1,11 @@
 import uuid
-
+import logging
 from yookassa import Configuration, Payment
-from loguru import logger
 
-logger.add("debug.log", format="{time} {level} {message}",
-           level="DEBUG", rotation="10 MB", compression="zip")
-logger.add("info.log", format="{time} {level} {message}",
-           level="INFO", rotation="10 MB", compression="zip")
-logger.add("error.log", format="{time} {level} {message}",
-           level="ERROR", rotation="10 MB", compression="zip")
+from data.config import account_id, secret_key
 
-Configuration.account_id = "867452"
-Configuration.secret_key = "test_Bufj8lzLeS4W8ZFBRgJ7WmWunxJe_FeyvLcsZSJHAL4"
+Configuration.account_id = account_id
+Configuration.secret_key = secret_key
 
 
 def check_payment(payment_id: str) -> str:
@@ -21,13 +15,13 @@ def check_payment(payment_id: str) -> str:
     :param payment_id: Идентификатор платежа
     :return: Возвращает статус платежа
     """
-    logger.debug(f"check_payment | {payment_id}")
+    logging.debug(f"check_payment | {payment_id}")
     try:
         payment = Payment.find_one(payment_id)
-        logger.debug(f"check_payment | {payment_id} | {payment.status}")
+        logging.debug(f"check_payment | {payment_id} | {payment.status}")
         return payment.status
     except Exception as e:
-        logger.error(f"Can't find payment with id - {payment_id} with error - {e}")
+        logging.error(f"Can't find payment with id - {payment_id} with error - {e}")
 
 
 def make_onetime_payment(amount: int, description: str = "Пополнение баланса") -> tuple[str, str]:
@@ -38,7 +32,7 @@ def make_onetime_payment(amount: int, description: str = "Пополнение �
     :param description: Описание платежа для пользователя
     :return: Возвращает идентификатор для отслеживания статуса платежа
     """
-    logger.debug(f"make_onetime_payment | {amount}")
+    logging.debug(f"make_onetime_payment | {amount}")
     return_url = "https://www.merchant-website.com/return_url"  # ссылка на бота
     try:
         payment = Payment.create({
@@ -53,10 +47,10 @@ def make_onetime_payment(amount: int, description: str = "Пополнение �
             "capture": True,
             "description": description
         }, uuid.uuid4())
-        logger.debug(f"make_onetime_payment | {payment.id} | {payment.confirmation.confirmation_url}")
+        logging.debug(f"make_onetime_payment | {payment.id} | {payment.confirmation.confirmation_url}")
         return payment.id, payment.confirmation.confirmation_url
     except Exception as e:
-        logger.error(f"make_onetime_payment | {amount} | error - {e}")
+        logging.error(f"make_onetime_payment | {amount} | error - {e}")
 
 
 def make_auto_payment_init(amount: int, pay_type: str, description: str = "Подписка") -> tuple[str, str]:
@@ -69,7 +63,7 @@ def make_auto_payment_init(amount: int, pay_type: str, description: str = "По�
     :return: Возвращает идентификатора сохраненного способа оплаты
     """
     return_url = "https://www.merchant-website.com/return_url"  # ссылка на бота
-    logger.debug(f"make_auto_payment_init | {amount} | {pay_type}")
+    logging.debug(f"make_auto_payment_init | {amount} | {pay_type}")
     try:
         payment = Payment.create({
             "amount": {
@@ -87,10 +81,10 @@ def make_auto_payment_init(amount: int, pay_type: str, description: str = "По�
             "description": description,
             "save_payment_method": True
         })
-        logger.debug(f"make_auto_payment_init {payment.id} | {payment.confirmation.confitamtion_url}")
+        logging.debug(f"make_auto_payment_init {payment.id} | {payment.confirmation.confitamtion_url}")
         return payment.payment_method.id, payment.confirmation.confitamtion_url
     except Exception as e:
-        logger.error(f"make_auto_payment_init | {amount} | {pay_type} | error - {e}")
+        logging.error(f"make_auto_payment_init | {amount} | {pay_type} | error - {e}")
 
 
 def make_auto_payment(amount: int, payment_method_id: str, description: str = "Подписка") -> str:
@@ -102,7 +96,7 @@ def make_auto_payment(amount: int, payment_method_id: str, description: str = "�
     :param description: Описание платежа для пользователя
     :return: Возвращает идентификатор для отслеживания статуса платежа
     """
-    logger.debug(f"make_auto_payment | {amount} | {payment_method_id}")
+    logging.debug(f"make_auto_payment | {amount} | {payment_method_id}")
     try:
         payment = Payment.create({
             "amount": {
@@ -113,8 +107,7 @@ def make_auto_payment(amount: int, payment_method_id: str, description: str = "�
             "payment_method_id": payment_method_id,
             "description": description
         })
-        logger.debug(f"make_auto_payment | {payment.id}")
+        logging.debug(f"make_auto_payment | {payment.id}")
         return payment.id  # не принимает карты с 3d secure
     except Exception as e:
-        logger.error(f"make_auto_payment | {amount} | {payment_method_id} | error - {e}")
-
+        logging.error(f"make_auto_payment | {amount} | {payment_method_id} | error - {e}")

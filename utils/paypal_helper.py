@@ -1,5 +1,5 @@
 from paypalcheckoutsdk.core import PayPalHttpClient, SandboxEnvironment
-from config import client_id, client_secret, return_url
+from data.config import client_id, client_secret, return_url
 
 from paypalcheckoutsdk.orders import OrdersCaptureRequest, OrdersGetRequest, OrdersCreateRequest
 
