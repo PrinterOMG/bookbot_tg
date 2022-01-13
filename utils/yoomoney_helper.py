@@ -2,7 +2,7 @@ import uuid
 import logging
 from yookassa import Configuration, Payment
 
-from data.config import account_id, secret_key
+from data.config import account_id, secret_key, return_url
 
 Configuration.account_id = account_id
 Configuration.secret_key = secret_key
@@ -30,10 +30,9 @@ def make_onetime_payment(amount: int, description: str = "Пополнение �
 
     :param amount: Сумма платежа
     :param description: Описание платежа для пользователя
-    :return: Возвращает идентификатор для отслеживания статуса платежа
+    :return: Возвращает идентификатор для отслеживания статуса платежа, ссылку для оплаты
     """
     logging.debug(f"make_onetime_payment | {amount}")
-    return_url = "https://www.merchant-website.com/return_url"  # ссылка на бота
     try:
         payment = Payment.create({
             "amount": {
@@ -60,9 +59,8 @@ def make_auto_payment_init(amount: int, pay_type: str, description: str = "По�
     :param amount: Сумма платежа
     :param pay_type: Один из типов: bank_card, apple_pay, google_pay, yoo_money
     :param description: Описание платежа для пользователя
-    :return: Возвращает идентификатора сохраненного способа оплаты
+    :return: Возвращает идентификатора сохраненного способа оплаты, ссылку для оплаты
     """
-    return_url = "https://www.merchant-website.com/return_url"  # ссылка на бота
     logging.debug(f"make_auto_payment_init | {amount} | {pay_type}")
     try:
         payment = Payment.create({
