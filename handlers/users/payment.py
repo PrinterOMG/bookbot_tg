@@ -10,9 +10,8 @@ from utils.yoomoney_helper import make_onetime_payment, check_payment
 async def yoomoney_payment(call: CallbackQuery, callback_data: dict):
     what = callback_data["what"]
     amount = callback_data["value"]
-    make_onetime_payment(amount, "Пополнение баланса book bot")
-
-
+    order_id, link = make_onetime_payment(amount, "Пополнение баланса book bot")
+    await call.answer(link)
 
 
 @dp.callback_query_handler(payment_callback.filter(method="telegram"))
