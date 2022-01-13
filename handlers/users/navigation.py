@@ -34,7 +34,7 @@ async def send_balance(call: CallbackQuery):
     text = languages_worker.get_text_on_user_language(call.from_user.id, "balanceMenu")
 
     await call.message.edit_text(text["balanceMenu"].format(balance=users_worker.get_balance(call.from_user.id)),
-                                 reply_markup=get_balance_keyboard(call.from_user.id))
+                                 reply_markup=await get_balance_keyboard(call.from_user.id))
 
 
 @dp.callback_query_handler(navigation_callback.filter(to="question"))

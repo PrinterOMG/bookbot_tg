@@ -4,7 +4,7 @@ from loader import languages_worker
 from .callbacks import navigation_callback, check_callback
 
 
-async def get_pay_keyboard(user_id, order_id, link):
+async def get_pay_keyboard(user_id, order_id, link, what, amount):
     text = languages_worker.get_text_on_user_language(user_id, "payButton, cancelButton, checkPayButton")  # dict\
 
     keyboard = [
@@ -12,7 +12,7 @@ async def get_pay_keyboard(user_id, order_id, link):
             InlineKeyboardButton(text["payButton"], url=link)
         ],
         [
-            InlineKeyboardButton(text["checkPayButton"], callback_data=check_callback.new(order_id))
+            InlineKeyboardButton(text["checkPayButton"], callback_data=check_callback.new(what, order_id, amount))
         ],
         [
             InlineKeyboardButton(text["cancelButton"], callback_data=navigation_callback.new("main"))

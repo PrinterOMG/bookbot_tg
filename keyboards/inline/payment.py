@@ -27,9 +27,9 @@ async def get_payment_keyboard(user_id, for_subs=False, value=0, back="main"):
             [
                 InlineKeyboardButton(text["paypalButton"], callback_data=payment_callback.new("topup", value, "paypal"))
             ],
-            [
-                InlineKeyboardButton(text["sbpButton"], callback_data=payment_callback.new("topup", value))
-            ]
+            # [
+            #     InlineKeyboardButton(text["sbpButton"], callback_data=payment_callback.new("topup", value, "sbp"))
+            # ]
         ]
 
     keyboard.append([InlineKeyboardButton(text["backButton"], callback_data=navigation_callback.new(back))])

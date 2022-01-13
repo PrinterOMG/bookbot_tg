@@ -12,7 +12,7 @@ from data.config import PAYMENTS_PROVIDER_TOKEN
 
 @dp.callback_query_handler(payment_callback.filter(what="topup"))
 async def payment(call: CallbackQuery, callback_data: dict):
-    text = languages_worker.get_text_on_user_language(call.from_user.id, "payMenu, payOk, payError, payTitle, "
+    text = languages_worker.get_text_on_user_language(call.from_user.id, "payMenu, payTitle, "
                                                                          "payDescription")
     amount = callback_data["value"]
 
@@ -21,12 +21,13 @@ async def payment(call: CallbackQuery, callback_data: dict):
         if method == "yoomoney":
             order_id, link = make_onetime_payment(amount, text["payDescription"].format(amount=amount))
         else:
+            print(create_payment_paypal(amount))
             link, order_id = create_payment_paypal(amount)
         await call.message.edit_text(text["payMenu"],
-                                     reply_markup=await get_pay_keyboard(call.from_user.id, order_id, link))
+                                     reply_markup=await get_pay_keyboard(call.from_user.id, order_id, link, method, amount))
     else:
         prices = [
-            LabeledPrice(label='Working Time Machine', amount=amount),
+            LabeledPrice(label=text["payTitle"], amount=amount),
         ]
         await bot.send_invoice(call.from_user.id, title=text["payTitle"],
                                description=text["payDescription"].format(amount=amount),
