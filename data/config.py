@@ -20,3 +20,6 @@ return_url = env.str("return_url")
 # yoomoney
 account_id = "867452"
 secret_key = "test_Bufj8lzLeS4W8ZFBRgJ7WmWunxJe_FeyvLcsZSJHAL4"
+
+# telegram_payment
+PAYMENTS_PROVIDER_TOKEN = env.str("PAYMENTS_PROVIDER_TOKEN")
