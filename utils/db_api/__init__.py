@@ -5,3 +5,5 @@ from .subPrices_worker import SubPricesWorker
 from .promocodes_worker import PromocodesWorker
 from .settings_worker import SettingsWorker
 from .questions_worker import QuestionsWorker
+from .books_worker import BooksWorker
+from .subscribes_worker import SubscribesWorker
