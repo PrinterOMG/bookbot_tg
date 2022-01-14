@@ -15,7 +15,10 @@ class DatabaseCore:
     def send_query(self, sql: str, *args) -> Union[list, tuple]:
         with closing(pymysql.connect(host=self.host, user=self.username, password=self.password, db=self.db_name, cursorclass=DictCursor)) as conn:
             with conn.cursor() as cursor:
-                cursor.execute(sql, args)
+                if args:
+                    cursor.execute(sql, args)
+                else:
+                    cursor.execute(sql)
 
                 records = cursor.fetchall()
 
