@@ -24,7 +24,7 @@ def check_payment(payment_id: str) -> str:
         logging.error(f"Can't find payment with id - {payment_id} with error - {e}")
 
 
-def make_onetime_payment(amount: int, description: str = "Пополнение баланса") -> tuple[str, str]:
+def make_onetime_payment(amount: int, description: str = "Пополнение баланса"):
     """
     Создает платеж в YooMoney
 
@@ -52,7 +52,7 @@ def make_onetime_payment(amount: int, description: str = "Пополнение �
         logging.error(f"make_onetime_payment | {amount} | error - {e}")
 
 
-def make_auto_payment_init(amount: int, pay_type: str, description: str = "Подписка") -> tuple[str, str]:
+def make_auto_payment_init(amount: int, pay_type: str, description: str = "Подписка"):
     """
     Создает платеж с сохранением способа оплаты для автоплатежа в YooMoney
 
@@ -79,8 +79,8 @@ def make_auto_payment_init(amount: int, pay_type: str, description: str = "По�
             "description": description,
             "save_payment_method": True
         })
-        logging.debug(f"make_auto_payment_init {payment.id} | {payment.confirmation.confitamtion_url}")
-        return payment.payment_method.id, payment.confirmation.confitamtion_url
+        logging.debug(f"make_auto_payment_init {payment.id} | {payment.confirmation.confirmation_url}")
+        return payment.payment_method.id, payment.confirmation.confirmation_url
     except Exception as e:
         logging.error(f"make_auto_payment_init | {amount} | {pay_type} | error - {e}")
 

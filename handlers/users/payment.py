@@ -2,10 +2,10 @@ from aiogram.types import CallbackQuery, LabeledPrice
 
 from loader import dp, languages_worker, bot
 from keyboards.inline.callbacks import payment_callback
-from keyboards.inline import get_pay_keyboard
+from keyboards.inline import get_pay_keyboard, get_yoomoney_pay_keyboard
 
 from utils.yoomoney_helper import make_onetime_payment
-from utils.paypal_helper import create_payment_paypal
+from utils.paypal_helper import create_payment_paypal, create_sub_paypal_payment
 
 from data.config import PAYMENTS_PROVIDER_TOKEN
 
@@ -15,7 +15,6 @@ async def payment(call: CallbackQuery, callback_data: dict):
     text = languages_worker.get_text_on_user_language(call.from_user.id, "payMenu, payTitle, "
                                                                          "payDescription")
     amount = callback_data["value"]
-
     method = callback_data["method"]
     if method == "yoomoney" or method == "paypal":
         if method == "yoomoney":
@@ -36,3 +35,16 @@ async def payment(call: CallbackQuery, callback_data: dict):
                                prices=prices,
                                start_parameter='yesy',
                                payload='hjskj')
+
+
+@dp.callback_query_handler(payment_callback.filter(what="sub"))
+async def sub_payment(call: CallbackQuery, callback_data: dict):
+    text = languages_worker.get_text_on_user_language(call.from_user.id, "yoomoneyMenu")
+
+    amount = callback_data["value"]
+    method = callback_data["method"]
+    if method == "yoomoney_sub":
+        await call.message.edit_text(text["yoomoneyMenu"], reply_markup=await get_yoomoney_pay_keyboard(call.from_user.id, amount))
+    else:
+        pass  # only fixed prices for sub
+    # maybe i cn generate it

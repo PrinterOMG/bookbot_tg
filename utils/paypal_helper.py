@@ -45,7 +45,7 @@ class SubscriptionActivate:
         return self
 
 
-def create_sub_paypal_payment(plan_id: str) -> tuple[str, str]:
+def create_sub_paypal_payment(plan_id: str):
     request = SubscriptionRequest()
     request.request_body({
           "plan_id": plan_id,
@@ -79,7 +79,7 @@ def capture_onetime_order(order_id: str):
         return response.result.status
 
 
-def create_payment_paypal(amount: int) -> tuple[str, str]:
+def create_payment_paypal(amount: int):
     request = OrdersCreateRequest()
 
     request.prefer('return=representation')

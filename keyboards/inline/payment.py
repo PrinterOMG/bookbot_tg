@@ -4,16 +4,16 @@ from loader import languages_worker
 from .callbacks import navigation_callback, payment_callback
 
 
-async def get_payment_keyboard(user_id, for_subs=False, value=0, back="main"):
+async def get_payment_keyboard(user_id, for_subs=False, value=0, back="main", amount=0):
     text = languages_worker.get_text_on_user_language(user_id, "telegramPayButton, yookassaButton, paypalButton, sbpButton, backButton")
 
     if for_subs:
         keyboard = [
             [
-                InlineKeyboardButton(text["yookassaButton"], callback_data=payment_callback.new("sub", value))
+                InlineKeyboardButton(text["yookassaButton"], callback_data=payment_callback.new("sub", value, "yoomoney_sub"))
             ],
             [
-                InlineKeyboardButton(text["paypalButton"], callback_data=payment_callback.new("sub", value))
+                InlineKeyboardButton(text["paypalButton"], callback_data=payment_callback.new("sub", value, "paypal_sub"))
             ]
         ]
     else:

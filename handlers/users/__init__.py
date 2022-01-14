@@ -10,3 +10,7 @@ from . import search
 from . import buy_book
 from . import topup
 from . import payment
+from . import yoomoney_sub
+from . import fundraising
+from . import buy_fund_book
+from . import download

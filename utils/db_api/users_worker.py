@@ -35,3 +35,18 @@ class UsersWorker(DatabaseCore):
         sql = f"UPDATE BookBotAdmin_users SET balance=balance{action} WHERE userId={user_id}"
 
         self.send_query(sql)
+
+    def get_show_progress(self, user_id):
+        sql = f"SELECT showProgress FROM BookBotAdmin_users WHERE userId={user_id}"
+
+        return self.send_query(sql)[0]
+
+    def change_show_progress(self, user_id, new):
+        sql = f"UPDATE BookBotAdmin_users SET showProgress={new} WHERE userId={user_id}"
+
+        self.send_query(sql)
+
+    def save_payment_method(self, user_id, payment_method_id):
+        sql = f"UPDATE BookBotAdmin_users SET paymentId='{payment_method_id}' WHERE userId={user_id}"
+
+        self.send_query(sql)

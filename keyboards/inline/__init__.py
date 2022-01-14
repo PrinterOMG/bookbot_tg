@@ -8,3 +8,6 @@ from .booksearch import get_search_keyboard
 from .payment import get_payment_keyboard
 from .buy_book import get_book_buy_keyboard
 from .pay import get_pay_keyboard
+from .fundraising import get_fundraising_keyboard
+from .fund_book import get_fund_book_keyboard
+from .subscribe_yoomoney_pay import get_yoomoney_pay_keyboard

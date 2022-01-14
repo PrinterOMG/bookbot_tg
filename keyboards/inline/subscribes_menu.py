@@ -15,17 +15,19 @@ async def get_subscribes_keyboard(user_id):
         keyboard = list()
         for sub_price in sub_prices:
             if sub_price["subPriceId"] in sub_prices_discount:
-                price = f"( {await strike(sub_price['value'])} ) {round(sub_price['value'] * ((100 - discount) / 100))}"
+                price = round(sub_price['value'] * ((100 - discount) / 100))
+                price_str = f"( {await strike(sub_price['value'])} ) {price}"
                 # price = str(round(sub_price['value'] * ((100 - discount) / 100)))
-                btn_text = text["buySubButton"].format(duration=sub_price["duration"], price=price)
+                btn_text = text["buySubButton"].format(duration=sub_price["duration"], price=price_str)
             else:
+                price = sub_price["value"]
                 btn_text = text["buySubButton"].format(duration=sub_price["duration"], price=sub_price["value"])
-            keyboard.append([InlineKeyboardButton(btn_text, callback_data=buy_subscribe_callback.new(sub_price["subPriceId"]))])
+            keyboard.append([InlineKeyboardButton(btn_text, callback_data=buy_subscribe_callback.new(sub_price["subPriceId"], price))])
 
         keyboard.append([InlineKeyboardButton(text["cancelPromoButton"], callback_data=promo_callback.new("cancel"))])
     else:
         keyboard = [
-            [InlineKeyboardButton(text["buySubButton"].format(duration=el["duration"], price=el["value"]), callback_data=buy_subscribe_callback.new(el["subPriceId"]))] for el in sub_prices
+            [InlineKeyboardButton(text["buySubButton"].format(duration=el["duration"], price=el["value"]), callback_data=buy_subscribe_callback.new(el["subPriceId"], el["value"]))] for el in sub_prices
         ]
         keyboard.append([InlineKeyboardButton(text["usePromocodeButton"], callback_data=promo_callback.new("use"))])
 
