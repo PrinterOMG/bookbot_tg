@@ -10,10 +10,10 @@ async def get_payment_keyboard(user_id, for_subs=False, value=0, back="main"):
     if for_subs:
         keyboard = [
             [
-                InlineKeyboardButton(text["yookassaButton"], callback_data=payment_callback.new("sub", value))
+                InlineKeyboardButton(text["yookassaButton"], callback_data=payment_callback.new("sub", value, "yoomoney_sub"))
             ],
             [
-                InlineKeyboardButton(text["paypalButton"], callback_data=payment_callback.new("sub", value))
+                InlineKeyboardButton(text["paypalButton"], callback_data=payment_callback.new("sub", value, "paypal_sub"))
             ]
         ]
     else:
