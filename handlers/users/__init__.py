@@ -14,3 +14,4 @@ from . import yoomoney_sub
 from . import fundraising
 from . import buy_fund_book
 from . import download
+from . import progress

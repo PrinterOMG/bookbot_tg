@@ -20,7 +20,7 @@ async def payment(call: CallbackQuery, callback_data: dict):
         if method == "yoomoney":
             order_id, link = make_onetime_payment(amount, text["payDescription"].format(amount=amount))
         else:
-            print(create_payment_paypal(amount))
+            # print(create_payment_paypal(amount))
             link, order_id = create_payment_paypal(amount)
         await call.message.edit_text(text["payMenu"],
                                      reply_markup=await get_pay_keyboard(call.from_user.id, order_id, link, method, amount))

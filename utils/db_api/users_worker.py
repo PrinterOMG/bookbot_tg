@@ -39,7 +39,7 @@ class UsersWorker(DatabaseCore):
     def get_show_progress(self, user_id):
         sql = f"SELECT showProgress FROM BookBotAdmin_users WHERE userId={user_id}"
 
-        return self.send_query(sql)[0]
+        return self.send_query(sql)[0]["showProgress"]
 
     def change_show_progress(self, user_id, new):
         sql = f"UPDATE BookBotAdmin_users SET showProgress={new} WHERE userId={user_id}"
