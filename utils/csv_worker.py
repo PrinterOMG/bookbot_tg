@@ -3,7 +3,7 @@ import aiofiles as aiof
 
 
 async def search(filename, s_type, value):
-    reader = pd.read_csv("../admin/" + filename, delimiter="\t")
+    reader = pd.read_csv("../admin/" + filename, delimiter=";")
     # reader = pd.read_csv("books_russian.csv", delimiter=";")
     print(reader.head())
 
