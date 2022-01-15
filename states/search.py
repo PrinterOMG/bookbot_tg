@@ -35,7 +35,7 @@ async def search_input(message: Message, state: FSMContext):
             price = result["price"][i]
 
             books.append(
-                text["bookFormat"].format(id=i, title=title, author=author, genre=genre, year=year, price=price))
+                text["bookArchiveFormat"].format(id=i, title=title, author=author, genre=genre, year=year, price=price))
 
         books = "\n".join(books)
 
