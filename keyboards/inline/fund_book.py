@@ -10,21 +10,20 @@ async def get_fund_book_keyboard(user_id, book_id, price, link):
     is_sub = subscribes_worker.is_user_have_active_subscribe(user_id)
 
     if is_payed:
-
         keyboard = [
             [
                 InlineKeyboardButton(text["downloadButton"], callback_data=download_fund_book.new(link.replace(":", ";")))
             ]
         ]
+        if is_sub:
+            keyboard.append(
+                [InlineKeyboardButton(text["showProgressButton"], callback_data=show_progress_callback.new(book_id))])
     else:
         keyboard = [
             [
                 InlineKeyboardButton(text["payButton"], callback_data=buy_fund_book_callback.new(book_id, price))
             ]
         ]
-
-    if is_sub:
-        keyboard.append([InlineKeyboardButton(text["showProgressButton"], callback_data=show_progress_callback.new(book_id))])
 
     keyboard.append([InlineKeyboardButton(text["backButton"], callback_data=navigation_callback.new("fundraising"))])
 

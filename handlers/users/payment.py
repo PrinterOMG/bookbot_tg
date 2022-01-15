@@ -15,7 +15,7 @@ from data.config import PAYMENTS_PROVIDER_TOKEN
 @dp.callback_query_handler(payment_callback.filter(what="topup"))
 async def payment(call: CallbackQuery, callback_data: dict):
     text = languages_worker.get_text_on_user_language(call.from_user.id, "payMenu, payTitle, "
-                                                                         "payDescription")
+                                                                         "payDescription, telegramPayLimit")
     amount = int(callback_data["value"])
     method = callback_data["method"]
     if method == "yoomoney" or method == "paypal":
@@ -26,6 +26,9 @@ async def payment(call: CallbackQuery, callback_data: dict):
         await call.message.edit_text(text["payMenu"],
                                      reply_markup=await get_pay_keyboard(call.from_user.id, order_id, link, method, amount, 0))
     else:
+        if amount < 60:
+            await call.answer(text["telegramPayLimit"], show_alert=True)
+            return
         prices = [
             LabeledPrice(label=text["payTitle"], amount=amount*100),
         ]

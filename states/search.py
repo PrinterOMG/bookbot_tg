@@ -21,7 +21,7 @@ async def search_input(message: Message, state: FSMContext):
     search_type = (await state.get_data("type"))["type"]
 
     text = languages_worker.get_text_on_user_language(message.from_user.id,
-                                                      "bookFile, searchError, searchTextResult, searchFileResult, bookFormat")
+                                                      "bookFile, searchError, searchTextResult, searchFileResult, bookArchiveFormat")
 
     result = await search(text["bookFile"], search_type, value)
 
