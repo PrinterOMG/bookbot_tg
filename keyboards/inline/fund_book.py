@@ -1,7 +1,7 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 from loader import languages_worker, books_worker, subscribes_worker
-from keyboards.inline.callbacks import navigation_callback, buy_fund_book_callback, download_fund_book
+from keyboards.inline.callbacks import navigation_callback, buy_fund_book_callback, download_fund_book, show_progress_callback
 
 
 async def get_fund_book_keyboard(user_id, book_id, price, link):
@@ -24,7 +24,7 @@ async def get_fund_book_keyboard(user_id, book_id, price, link):
         ]
 
     if is_sub:
-        keyboard.append([InlineKeyboardButton(text["showProgressButton"], callback_data="show_progress")])
+        keyboard.append([InlineKeyboardButton(text["showProgressButton"], callback_data=show_progress_callback.new(book_id))])
 
     keyboard.append([InlineKeyboardButton(text["backButton"], callback_data=navigation_callback.new("fundraising"))])
 
