@@ -3,13 +3,10 @@ from .db_core import DatabaseCore
 
 class UsersWorker(DatabaseCore):
     def register_new_user(self, user_id, username, language_id, ref):
-        if ref:
-            sql = f"INSERT INTO BookBotAdmin_users(userId, username, balance, isBlock, showProgress, deposit, subscribeTime, languageId_id, referral_id, notEndPayment) " \
-                  f"VALUES({user_id}, '{username}', 0, 0, 0, 0, 0, {language_id}, {ref}, 0)"
-        else:
-            sql = f"INSERT INTO BookBotAdmin_users(userId, username, balance, isBlock, showProgress, deposit, subscribeTime, languageId_id, notEndPayment) " \
-                  f"VALUES({user_id}, '{username}', 0, 0, 0, 0, 0, {language_id}, 0)"
+        sql = f"INSERT INTO BookBotAdmin_users(userId, username, balance, isBlock, showProgress, deposit, subscribeTime, languageId_id, referral_id, notEndPayment) " \
+              f"VALUES({user_id}, '{username}', 0, 0, 0, 0, 0, {language_id}, {ref}, 0)"
 
+        print(sql)
         self.send_query(sql)
 
     def is_user_reg(self, user_id):
