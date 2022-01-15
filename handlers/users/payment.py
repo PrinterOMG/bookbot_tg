@@ -1,3 +1,5 @@
+import json
+
 from aiogram.types import CallbackQuery, LabeledPrice
 
 from loader import dp, languages_worker, bot, subscribes_worker
@@ -14,7 +16,7 @@ from data.config import PAYMENTS_PROVIDER_TOKEN
 async def payment(call: CallbackQuery, callback_data: dict):
     text = languages_worker.get_text_on_user_language(call.from_user.id, "payMenu, payTitle, "
                                                                          "payDescription")
-    amount = callback_data["value"]
+    amount = int(callback_data["value"])
     method = callback_data["method"]
     if method == "yoomoney" or method == "paypal":
         if method == "yoomoney":
@@ -22,18 +24,19 @@ async def payment(call: CallbackQuery, callback_data: dict):
         else:
             link, order_id = create_payment_paypal(amount)
         await call.message.edit_text(text["payMenu"],
-                                     reply_markup=await get_pay_keyboard(call.from_user.id, order_id, link, method, amount))
+                                     reply_markup=await get_pay_keyboard(call.from_user.id, order_id, link, method, amount, 0))
     else:
         prices = [
-            LabeledPrice(label=text["payTitle"], amount=amount),
+            LabeledPrice(label=text["payTitle"], amount=amount*100),
         ]
+        await call.message.delete()
         await bot.send_invoice(call.from_user.id, title=text["payTitle"],
                                description=text["payDescription"].format(amount=amount),
                                provider_token=PAYMENTS_PROVIDER_TOKEN,
                                currency='rub',
                                prices=prices,
                                start_parameter='yesy',
-                               payload='hjskj')
+                               payload='some-invoice-payload-for-our-internal-use')
 
 
 @dp.callback_query_handler(payment_callback.filter(what="sub"))

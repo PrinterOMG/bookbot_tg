@@ -1,7 +1,7 @@
-from aiogram.types import CallbackQuery
+from aiogram.types import CallbackQuery, PreCheckoutQuery, ContentType, Message
 
 from keyboards.inline import get_balance_keyboard
-from loader import dp, languages_worker, users_worker, subscribes_worker, promo_worker
+from loader import dp, languages_worker, users_worker, subscribes_worker, promo_worker, bot
 
 from keyboards.inline.callbacks import check_callback
 
@@ -49,10 +49,22 @@ async def check_pay(call: CallbackQuery, callback_data: dict):
             if status == "COMPLETED":
                 users_worker.change_balance(call.from_user.id, f"+{amount}")
                 await call.answer(text["payOk"], show_alert=True)
-                await call.message.answer(
-                    text["balanceMenu"].format(balance=users_worker.get_balance(call.from_user.id)),
-                    reply_markup=await get_balance_keyboard(call.from_user.id))
+                await send_balance(call)
             else:
                 await call.answer(text["payError"], show_alert=True)
         else:
             await call.answer(text["payError"], show_alert=True)
+
+
+@dp.pre_checkout_query_handler(lambda query: True)
+async def process_pre_checkout_query(pre_checkout_query: PreCheckoutQuery):
+    await bot.answer_pre_checkout_query(pre_checkout_query.id, ok=True)
+
+
+@dp.message_handler(content_types=ContentType.SUCCESSFUL_PAYMENT)
+async def process_successful_payment(message: Message):
+    text = languages_worker.get_text_on_user_language(message.chat.id, "balanceMenu")
+    users_worker.change_balance(message.chat.id, f"+{message.successful_payment.total_amount // 100}")
+    await message.delete()
+    await message.answer(text["balanceMenu"].format(balance=users_worker.get_balance(message.chat.id)),
+                         reply_markup=await get_balance_keyboard(message.chat.id))
