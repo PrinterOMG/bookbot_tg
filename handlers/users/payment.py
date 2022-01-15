@@ -20,7 +20,6 @@ async def payment(call: CallbackQuery, callback_data: dict):
         if method == "yoomoney":
             order_id, link = make_onetime_payment(amount, text["payDescription"].format(amount=amount))
         else:
-            # print(create_payment_paypal(amount))
             link, order_id = create_payment_paypal(amount)
         await call.message.edit_text(text["payMenu"],
                                      reply_markup=await get_pay_keyboard(call.from_user.id, order_id, link, method, amount))
@@ -40,6 +39,7 @@ async def payment(call: CallbackQuery, callback_data: dict):
 @dp.callback_query_handler(payment_callback.filter(what="sub"))
 async def sub_payment(call: CallbackQuery, callback_data: dict):
     text = languages_worker.get_text_on_user_language(call.from_user.id, "yoomoneyMenu, alreadySubError")
+    sub_id = callback_data["sub_id"]
 
     is_sub = subscribes_worker.is_user_have_active_subscribe(call.from_user.id)
     if is_sub:
@@ -49,7 +49,7 @@ async def sub_payment(call: CallbackQuery, callback_data: dict):
     amount = callback_data["value"]
     method = callback_data["method"]
     if method == "yoomoney_sub":
-        await call.message.edit_text(text["yoomoneyMenu"], reply_markup=await get_yoomoney_pay_keyboard(call.from_user.id, amount))
+        await call.message.edit_text(text["yoomoneyMenu"], reply_markup=await get_yoomoney_pay_keyboard(call.from_user.id, amount, sub_id))
     else:
         pass  # only fixed prices for sub
     # maybe i cn generate it

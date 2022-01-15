@@ -14,4 +14,4 @@ async def send_sub_payment(call: CallbackQuery, callback_data: dict):
         return
 
     await call.message.edit_text(text["paymentMenu"],
-                                 reply_markup=await get_payment_keyboard(call.from_user.id, for_subs=True, value=callback_data["value"], back="subscribes"))
+                                 reply_markup=await get_payment_keyboard(call.from_user.id, for_subs=True, value=callback_data["value"], back="subscribes", id=callback_data["id"]))
