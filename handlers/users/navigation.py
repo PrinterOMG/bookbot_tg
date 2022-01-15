@@ -1,7 +1,7 @@
 from aiogram.dispatcher import FSMContext
 from aiogram.types import CallbackQuery, ParseMode
 
-from loader import dp, languages_worker, users_worker
+from loader import dp, languages_worker, users_worker, subscribes_worker
 from keyboards.inline import get_main_keyboard, get_subscribes_keyboard, get_move_keyboard, get_balance_keyboard, \
     get_cancel_keyboard, get_search_keyboard, get_fundraising_keyboard
 from keyboards.inline.callbacks import navigation_callback
@@ -17,9 +17,18 @@ async def send_main_menu(call: CallbackQuery):
 
 @dp.callback_query_handler(navigation_callback.filter(to="subscribes"))
 async def send_subscribes_menu(call: CallbackQuery):
-    text = languages_worker.get_text_on_user_language(call.from_user.id, "subscribesMenu")
+    text = languages_worker.get_text_on_user_language(call.from_user.id, "subscribesMenu, subscribeFormat")
+    is_sub = subscribes_worker.is_user_have_active_subscribe(call.from_user.id)
 
-    await call.message.edit_text(text["subscribesMenu"], reply_markup=await get_subscribes_keyboard(call.from_user.id), parse_mode=ParseMode.MARKDOWN)
+    print(is_sub)
+    if is_sub:
+        subscribe_status = text["subscribeFormat"].format(end_date=is_sub)
+    else:
+        subscribe_status = ""
+    print(subscribe_status)
+
+    await call.message.edit_text(text["subscribesMenu"].format(subscribe=subscribe_status),
+                                 reply_markup=await get_subscribes_keyboard(call.from_user.id))
 
 
 @dp.callback_query_handler(navigation_callback.filter(to="info"))
