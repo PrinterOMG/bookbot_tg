@@ -65,7 +65,7 @@ async def book_input(message: Message, state: FSMContext):
     books = (await state.get_data("books"))["books"]
     main_msg = (await state.get_data("main_msg"))["main_msg"]
 
-    text = languages_worker.get_text_on_user_language(message.from_user.id, "bookInputError, bookBuyMenu, bookFormat")
+    text = languages_worker.get_text_on_user_language(message.from_user.id, "bookInputError, bookBuyMenu, bookArchiveFormat")
 
     if not book_id.isdigit() or (int(book_id) not in books["title"]):
         await main_msg.edit_text(text["bookInputError"],
@@ -73,7 +73,7 @@ async def book_input(message: Message, state: FSMContext):
     else:
         book_id = int(book_id)
 
-        book = text["bookFormat"].format(id=book_id, title=books["title"][book_id], genre=books["genre"][book_id],
+        book = text["bookArchiveFormat"].format(id=book_id, title=books["title"][book_id], genre=books["genre"][book_id],
                                          author=books["author"][book_id], year=books["year"][book_id],
                                          price=books["price"][book_id])
 
