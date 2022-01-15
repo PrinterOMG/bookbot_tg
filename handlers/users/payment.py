@@ -1,6 +1,6 @@
 from aiogram.types import CallbackQuery, LabeledPrice
 
-from loader import dp, languages_worker, bot
+from loader import dp, languages_worker, bot, subscribes_worker
 from keyboards.inline.callbacks import payment_callback
 from keyboards.inline import get_pay_keyboard, get_yoomoney_pay_keyboard
 
@@ -39,7 +39,12 @@ async def payment(call: CallbackQuery, callback_data: dict):
 
 @dp.callback_query_handler(payment_callback.filter(what="sub"))
 async def sub_payment(call: CallbackQuery, callback_data: dict):
-    text = languages_worker.get_text_on_user_language(call.from_user.id, "yoomoneyMenu")
+    text = languages_worker.get_text_on_user_language(call.from_user.id, "yoomoneyMenu, alreadySubError")
+
+    is_sub = subscribes_worker.is_user_have_active_subscribe(call.from_user.id)
+    if is_sub:
+        await call.answer(text["alreadySubError"], show_alert=True)
+        return
 
     amount = callback_data["value"]
     method = callback_data["method"]

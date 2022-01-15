@@ -24,7 +24,7 @@ async def search_input(message: Message, state: FSMContext):
         value = int(value)
         limit = settings_worker.get_top_up_limit()
 
-        if limit and value > limit:
+        if (limit and limit < value) or value <= 0:
             await main_msg.edit_text(text["topUpError"],
                                      reply_markup=await get_move_keyboard(message.from_user.id, to="balance"))
         else:
