@@ -5,6 +5,7 @@ import aiofiles as aiof
 async def search(filename, s_type, value):
     reader = pd.read_csv("../admin/" + filename, delimiter=";")
     # reader = pd.read_csv("books_russian.csv", delimiter=";")
+    print(reader.head())
 
     if s_type == "year":
         if value.isdigit():
