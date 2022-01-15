@@ -18,7 +18,7 @@ async def bot_start(message: types.Message):
         if ref_id:
             ref_id = ref_id
         else:
-            ref_id = "NULL"
+            ref_id = 0
 
         await message.answer(text=settings_worker.get_choose_languages_text(), reply_markup=await get_languages_keyboard("reg", ref_id))
         await message.delete()
@@ -35,7 +35,7 @@ async def language_choose(call: CallbackQuery, callback_data: dict):
     ref_id = callback_data["ref"]
 
     users_worker.register_new_user(call.from_user.id, call.from_user.full_name, lang_id, ref_id)
-    if ref_id != "NULL":
+    if ref_id != 0:
         referral_worker.add_to_register_count(ref_id)
 
     text = languages_worker.get_text(lang_id, "mainMenu")

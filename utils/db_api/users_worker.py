@@ -3,8 +3,12 @@ from .db_core import DatabaseCore
 
 class UsersWorker(DatabaseCore):
     def register_new_user(self, user_id, username, language_id, ref):
-        sql = f"INSERT INTO BookBotAdmin_users(userId, username, balance, isBlock, showProgress, deposit, subscribeTime, languageId_id, referral_id) " \
-              f"VALUES({user_id}, '{username}', 0, 0, 0, 0, 0, {language_id}, '{ref}')"
+        if ref:
+            sql = f"INSERT INTO BookBotAdmin_users(userId, username, balance, isBlock, showProgress, deposit, subscribeTime, languageId_id, referral_id) " \
+                  f"VALUES({user_id}, '{username}', 0, 0, 0, 0, 0, {language_id}, {ref})"
+        else:
+            sql = f"INSERT INTO BookBotAdmin_users(userId, username, balance, isBlock, showProgress, deposit, subscribeTime, languageId_id) " \
+                  f"VALUES({user_id}, '{username}', 0, 0, 0, 0, 0, {language_id})"
 
         self.send_query(sql)
 
