@@ -1,7 +1,7 @@
 from aiogram.types import CallbackQuery
 
 from keyboards.inline import get_balance_keyboard
-from loader import dp, languages_worker, users_worker, subscribes_worker
+from loader import dp, languages_worker, users_worker, subscribes_worker, promo_worker
 
 from keyboards.inline.callbacks import check_callback
 
@@ -34,6 +34,9 @@ async def check_pay(call: CallbackQuery, callback_data: dict):
             else:
                 subscribes_worker.create_subscribe_record(call.from_user.id, sub_type)
             await call.answer(text["payOk"], show_alert=True)
+            sub_prices, duration = promo_worker.get_user_discount(call.from_user.id)
+            if int(sub_type) in sub_prices:
+                promo_worker.use_promocode(call.from_user.id)
             await send_subscribes_menu(call)
             # TODO make payment operation worker
         else:
