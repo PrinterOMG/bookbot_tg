@@ -8,7 +8,7 @@ async def search(filename, s_type, value):
 
     if s_type == "year":
         if value.isdigit():
-            return reader[reader.year == int(value)].to_dict()
+            return reader[reader["year"] == int(value)].to_dict()
         else:
             return {"title": {}}
     else:
