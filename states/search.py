@@ -35,7 +35,7 @@ async def search_input(message: Message, state: FSMContext):
             price = result["price"][i]
 
             books.append(
-                text["bookArchiveFormat"].format(id=i, title=title, author=author, genre=genre, year=year, price=price))
+                text["bookArchiveFormat"].format(id=i + 1, title=title, author=author, genre=genre, year=year, price=price))
 
         books = "\n".join(books)
 
@@ -71,7 +71,7 @@ async def book_input(message: Message, state: FSMContext):
         await main_msg.edit_text(text["bookInputError"],
                                  reply_markup=await get_move_keyboard(message.from_user.id, to="archive"))
     else:
-        book_id = int(book_id)
+        book_id = int(book_id) - 1
 
         book = text["bookArchiveFormat"].format(id=book_id, title=books["title"][book_id], genre=books["genre"][book_id],
                                          author=books["author"][book_id], year=books["year"][book_id],
