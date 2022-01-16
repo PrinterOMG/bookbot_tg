@@ -15,7 +15,8 @@ async def buy_fund_book(call: CallbackQuery, callback_data: dict):
 
     if price > balance:
         await call.answer(text["buyBookError"], show_alert=True)
-        await call.message.edit_text(text["balanceMenu"], reply_markup=await get_balance_keyboard(call.from_user.id))
+        await call.message.edit_text(text["balanceMenu"].format(balance=balance),
+                                     reply_markup=await get_balance_keyboard(call.from_user.id))
         return
 
     await call.answer(text["buyBookOk"], show_alert=True)
