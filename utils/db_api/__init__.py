@@ -8,3 +8,5 @@ from .questions_worker import QuestionsWorker
 from .books_worker import BooksWorker
 from .subscribes_worker import SubscribesWorker
 from .operations import OperationsWorker
+from .post_worker import PostWorker
+from .filter_worker import FilterWorker

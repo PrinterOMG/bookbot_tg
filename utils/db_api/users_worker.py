@@ -63,3 +63,11 @@ class UsersWorker(DatabaseCore):
         sql = f"UPDATE BookBotAdmin_users SET isBlock={is_block} WHERE userId={user_id}"
 
         self.send_query(sql)
+
+    def get_all_subs(self):
+        sql = "SELECT userId, languageId_id FROM BookBotAdmin_users users " \
+              "LEFT JOIN BookBotAdmin_subscribes subs " \
+              "on subs.user_id = users.UserId " \
+              "WHERE isActive=1"
+
+        return self.send_query(sql)
