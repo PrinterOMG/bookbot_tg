@@ -73,7 +73,7 @@ async def book_input(message: Message, state: FSMContext):
     else:
         book_id = int(book_id) - 1
 
-        book = text["bookArchiveFormat"].format(id=book_id, title=books["title"][book_id], genre=books["genre"][book_id],
+        book = text["bookArchiveFormat"].format(id=book_id + 1, title=books["title"][book_id], genre=books["genre"][book_id],
                                          author=books["author"][book_id], year=books["year"][book_id],
                                          price=books["price"][book_id])
 
