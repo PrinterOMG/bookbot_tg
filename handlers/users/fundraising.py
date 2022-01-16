@@ -12,14 +12,13 @@ async def send_fundraising_book_menu(call: CallbackQuery, callback_data: dict):
 
     book_id = callback_data["id"]
     is_payed = books_worker.is_user_payed_for_book(call.from_user.id, book_id)
+    is_subscribed = subscribes_worker.is_user_have_active_subscribe(call.from_user.id)
 
     book = books_worker.get_book(book_id)
 
     if book["isDone"]:
         price = book["priceAfterDone"]
     else:
-        is_subscribed = subscribes_worker.is_user_have_active_subscribe(call.from_user.id)
-
         if is_subscribed:
             price = book["priceForSub"]
         else:
@@ -27,7 +26,10 @@ async def send_fundraising_book_menu(call: CallbackQuery, callback_data: dict):
 
     progress = ""
     if is_payed:
-        if show_progress:
+        if is_subscribed:
+            if show_progress:
+                progress = text["progressFormat"].format(percent=round((book["collectedSum"] / book["goalSum"]) * 100))
+        else:
             progress = text["progressFormat"].format(percent=round((book["collectedSum"] / book["goalSum"]) * 100))
 
     message = text["fundBookMenu"].format(
