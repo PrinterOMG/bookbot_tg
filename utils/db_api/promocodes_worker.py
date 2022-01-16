@@ -26,7 +26,7 @@ class PromocodesWorker(DatabaseCore):
         if record[0]["isActive"] or record[0]["isUsed"]:
             return "already used"
 
-        return record
+        return record[0]
 
     def set_user_promocode(self, user_id, code):
         sql = f"UPDATE BookBotAdmin_promocodes SET whoUsed_id={user_id}, isActive=1 WHERE promocode='{code}'"
