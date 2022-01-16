@@ -40,10 +40,13 @@ class PromocodesWorker(DatabaseCore):
               f"WHERE whoUsed_id={user_id} AND isActive=1"
 
         records = self.send_query(sql)
-        sub_prices = [el["subprices_id"] for el in records]
-        discount = records[0]["discount"]
+        if records:
+            sub_prices = [el["subprices_id"] for el in records]
+            discount = records[0]["discount"]
 
-        return sub_prices, discount
+            return sub_prices, discount
+        else:
+            return False, False
 
     def use_promocode(self, user_id):
         sql = f"UPDATE BookBotAdmin_promocodes SET isActive=0, isUsed=1 WHERE isActive=1 AND whoUsed_id={user_id}"
