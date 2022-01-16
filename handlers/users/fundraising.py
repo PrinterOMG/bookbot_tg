@@ -25,12 +25,11 @@ async def send_fundraising_book_menu(call: CallbackQuery, callback_data: dict):
             price = book["priceCommon"]
 
     progress = ""
-    if is_payed:
-        if is_subscribed:
-            if show_progress:
-                progress = text["progressFormat"].format(percent=round((book["collectedSum"] / book["goalSum"]) * 100))
-        else:
+    if is_subscribed:
+        if show_progress:
             progress = text["progressFormat"].format(percent=round((book["collectedSum"] / book["goalSum"]) * 100))
+    else:
+        progress = text["progressFormat"].format(percent=round((book["collectedSum"] / book["goalSum"]) * 100))
 
     message = text["fundBookMenu"].format(
         title=book["name"],
@@ -41,5 +40,5 @@ async def send_fundraising_book_menu(call: CallbackQuery, callback_data: dict):
         price=price
     )
     await call.message.edit_text(message,
-                                 reply_markup=await get_fund_book_keyboard(call.from_user.id, book_id, price, book["link"]))
+                                 reply_markup=await get_fund_book_keyboard(call.from_user.id, book_id, price, book["link"], book["isDone"]))
     await call.answer()
