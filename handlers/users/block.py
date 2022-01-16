@@ -5,5 +5,5 @@ from loader import dp
 
 @dp.my_chat_member_handler()
 async def block_user(my_chat_member: ChatMemberUpdated):
-    for el in my_chat_member:
+    for el in my_chat_member.iter_keys():
         print(el, my_chat_member[el])
