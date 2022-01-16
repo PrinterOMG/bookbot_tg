@@ -9,7 +9,7 @@ async def get_fund_book_keyboard(user_id, book_id, price, link, is_done):
     is_payed = books_worker.is_user_payed_for_book(user_id, book_id)
     is_sub = subscribes_worker.is_user_have_active_subscribe(user_id)
 
-    keyboard =[]
+    keyboard = []
     if is_payed and is_done:
         keyboard.append([InlineKeyboardButton(text["downloadButton"], callback_data=download_fund_book.new(link.replace(":", ";")))])
     else:
