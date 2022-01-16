@@ -67,7 +67,7 @@ async def book_input(message: Message, state: FSMContext):
 
     text = languages_worker.get_text_on_user_language(message.from_user.id, "bookInputError, bookBuyMenu, bookArchiveFormat")
 
-    if not book_id.isdigit() or (int(book_id) not in books["title"]):
+    if not book_id.isdigit() or (int(book_id) - 1 not in books["title"]):
         await main_msg.edit_text(text["bookInputError"],
                                  reply_markup=await get_move_keyboard(message.from_user.id, to="archive"))
     else:
