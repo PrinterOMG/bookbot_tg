@@ -3,6 +3,7 @@ from aiogram.types import CallbackQuery
 from keyboards.inline import get_balance_keyboard, get_fundraising_keyboard
 from loader import dp, languages_worker, users_worker, books_worker
 from keyboards.inline.callbacks import buy_fund_book_callback
+from utils.check_book import check_book
 
 
 @dp.callback_query_handler(buy_fund_book_callback.filter())
@@ -22,3 +23,4 @@ async def buy_fund_book(call: CallbackQuery, callback_data: dict):
     await call.message.edit_text(text["fundraisingMenu"], reply_markup=await get_fundraising_keyboard(call.from_user.id))
     books_worker.add_to_collected_sum(book_id, price)
     users_worker.change_balance(call.from_user.id, f"-{price}")
+    await check_book(book_id)

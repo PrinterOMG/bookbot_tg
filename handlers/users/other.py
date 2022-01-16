@@ -14,3 +14,10 @@ async def cancel_callback(call: CallbackQuery, state: FSMContext):
     text = languages_worker.get_text_on_user_language(call.from_user.id, "mainMenu")
     await state.finish()
     await call.message.edit_text(text["mainMenu"], reply_markup=await get_main_keyboard(call.from_user.id))
+    await call.answer()
+
+
+@dp.callback_query_handler(text="close")
+async def close_message(call: CallbackQuery):
+    await call.message.delete()
+    await call.answer()

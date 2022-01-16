@@ -13,4 +13,4 @@ async def send_top_up_payment(call: CallbackQuery, state: FSMContext):
     await state.update_data(main_msg=call.message)
     await TopUpInput.top_up_input.set()
     await call.message.edit_text(text["topUpInput"], reply_markup=await get_cancel_keyboard(call.from_user.id))
-
+    await call.answer()

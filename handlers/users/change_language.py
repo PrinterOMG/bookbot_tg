@@ -8,6 +8,7 @@ from keyboards.inline.callbacks import navigation_callback, language_callback
 @dp.callback_query_handler(navigation_callback.filter(to="language"))
 async def change_language_keyboard(call: CallbackQuery):
     await call.message.edit_text(settings_worker.get_choose_languages_text(), reply_markup=await get_languages_keyboard("change", "NULL"))
+    await call.answer()
 
 
 @dp.callback_query_handler(language_callback.filter(action="change"))

@@ -41,3 +41,4 @@ async def language_choose(call: CallbackQuery, callback_data: dict):
     text = languages_worker.get_text(lang_id, "mainMenu")
 
     await call.message.edit_text(text=text["mainMenu"], reply_markup=await get_main_keyboard(call.from_user.id))
+    await call.answer()

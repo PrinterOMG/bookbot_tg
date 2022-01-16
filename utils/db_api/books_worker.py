@@ -28,7 +28,6 @@ class BooksWorker(DatabaseCore):
 
     def add_payed_book_for_user(self, user_id, book_id):
         sql = f"INSERT INTO BookBotAdmin_books_userId(users_id, books_id) VALUES({user_id}, {book_id})"
-        print(sql)
 
         self.send_query(sql)
 
@@ -36,3 +35,17 @@ class BooksWorker(DatabaseCore):
         sql = f"UPDATE BookBotAdmin_books SET collectedSum=collectedSum+{amount} WHERE bookId={book_id}"
 
         self.send_query(sql)
+
+    def make_book_done(self, book_id):
+        sql = f"UPDATE BookBotAdmin_books SET isDone=1 WHERE bookId={book_id}"
+
+        self.send_query(sql)
+
+    def get_payed_users(self, book_id):
+        sql = f"SELECT users_id FROM BookBotAdmin_books_userId books " \
+              f"LEFT JOIN BookBotAdmin_users users " \
+              f"on books.users_id = users.userId " \
+              f"WHERE books_id={book_id} AND isBlock=0"
+
+        records = self.send_query(sql)
+        return [el["users_id"] for el in records]

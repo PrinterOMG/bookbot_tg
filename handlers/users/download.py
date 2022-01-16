@@ -13,3 +13,4 @@ async def download_fund_book(call: CallbackQuery, callback_data: dict):
     await call.message.delete()
     await call.message.answer(link + "\nТут файл прикреплён")
     await call.message.answer(text["mainMenu"], reply_markup=await get_main_keyboard(call.from_user.id))
+    await call.answer()

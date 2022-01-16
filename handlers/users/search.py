@@ -15,3 +15,4 @@ async def send_search_input(call: CallbackQuery, callback_data: dict, state: FSM
     text = languages_worker.get_text_on_user_language(call.from_user.id, "searchInput")
 
     await call.message.edit_text(text["searchInput"], reply_markup=await get_cancel_keyboard(call.from_user.id))
+    await call.answer()

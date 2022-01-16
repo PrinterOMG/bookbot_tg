@@ -40,6 +40,7 @@ async def payment(call: CallbackQuery, callback_data: dict):
                                prices=prices,
                                start_parameter='yesy',
                                payload='some-invoice-payload-for-our-internal-use')
+    await call.answer()
 
 
 @dp.callback_query_handler(payment_callback.filter(what="sub"))
@@ -59,3 +60,5 @@ async def sub_payment(call: CallbackQuery, callback_data: dict):
     else:
         pass  # only fixed prices for sub
     # maybe i cn generate it
+
+    await call.answer()
