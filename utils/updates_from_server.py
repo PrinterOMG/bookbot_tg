@@ -12,7 +12,7 @@ async def update():
                 InlineKeyboardButton(text["closeButton"], callback_data="close")
             ]
         ])
-        await bot.send_message(question["fromUser_id"], text=text["answerText"].format(question["text"], question["answer"]), reply_markup=keyboard)
+        await bot.send_message(question["fromUser_id"], text=text["answerText"].format(question=question["text"], answer=question["answer"]), reply_markup=keyboard)
         questions_worker.set_is_answered_true(question["questionId"])
 
     posts = post_worker.get_posts()
