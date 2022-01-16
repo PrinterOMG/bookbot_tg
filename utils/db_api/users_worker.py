@@ -58,3 +58,8 @@ class UsersWorker(DatabaseCore):
         sql = f"UPDATE BookBotAdmin_users SET deposit=deposit+{amount} WHERE userId={user_id}"
 
         self.send_query(sql)
+
+    def change_is_blocked(self, user_id, is_block):
+        sql = f"UPDATE BookBotAdmin_users SET isBlock={is_block} WHERE userId={user_id}"
+
+        self.send_query(sql)
