@@ -6,7 +6,6 @@ class UsersWorker(DatabaseCore):
         sql = f"INSERT INTO BookBotAdmin_users(userId, username, balance, isBlock, showProgress, deposit, subscribeTime, languageId_id, referral_id, notEndPayment) " \
               f"VALUES({user_id}, '{username}', 0, 0, 0, 0, 0, {language_id}, {ref}, 0)"
 
-        print(sql)
         self.send_query(sql)
 
     def is_user_reg(self, user_id):
@@ -33,7 +32,10 @@ class UsersWorker(DatabaseCore):
         return int(self.send_query(sql)[0]["balance"])
 
     def change_balance(self, user_id, action):
-        sql = f"UPDATE BookBotAdmin_users SET balance=balance{action} WHERE userId={user_id}"
+        if "-" in action:
+            sql = f"UPDATE BookBotAdmin_users SET balance=balance{action} WHERE userId={user_id}"
+        else:
+            sql = f"UPDATE BookBotAdmin_users SET balance=balance{action}, deposit=deposit{action} WHERE userId={user_id}"
 
         self.send_query(sql)
 
@@ -49,5 +51,10 @@ class UsersWorker(DatabaseCore):
 
     def save_payment_method(self, user_id, payment_method_id):
         sql = f"UPDATE BookBotAdmin_users SET paymentId='{payment_method_id}' WHERE userId={user_id}"
+
+        self.send_query(sql)
+
+    def add_to_deposit(self, user_id, amount):
+        sql = f"UPDATE BookBotAdmin_users SET deposit=deposit+{amount} WHERE userId={user_id}"
 
         self.send_query(sql)

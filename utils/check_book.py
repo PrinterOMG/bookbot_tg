@@ -6,6 +6,9 @@ from loader import bot, books_worker, languages_worker
 async def check_book(book_id):
     book = books_worker.get_book(book_id)
 
+    if book["isDone"]:
+        return
+
     if book["collectedSum"] >= book["goalSum"]:
         books_worker.make_book_done(book_id)
 

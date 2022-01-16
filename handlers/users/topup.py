@@ -34,6 +34,8 @@ async def check_pay(call: CallbackQuery, callback_data: dict):
             else:
                 subscribes_worker.create_subscribe_record(call.from_user.id, sub_type)
             await call.answer(text["payOk"], show_alert=True)
+            users_worker.add_to_deposit(call.from_user.id, amount)
+
             sub_prices, duration = promo_worker.get_user_discount(call.from_user.id)
             if int(sub_type) in sub_prices:
                 promo_worker.use_promocode(call.from_user.id)
