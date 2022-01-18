@@ -1,11 +1,19 @@
 from aiogram.dispatcher import FSMContext
-from aiogram.types import CallbackQuery, ParseMode
+from aiogram.types import CallbackQuery, Message
 
 from loader import dp, languages_worker, users_worker, subscribes_worker
 from keyboards.inline import get_main_keyboard, get_subscribes_keyboard, get_move_keyboard, get_balance_keyboard, \
     get_cancel_keyboard, get_search_keyboard, get_fundraising_keyboard
 from keyboards.inline.callbacks import navigation_callback
 from states.make_question import QuestionInput
+
+
+@dp.message_handler(commands=["menu"])
+async def send_menu(message: Message):
+    text = languages_worker.get_text_on_user_language(message.from_user.id, "mainMenu")
+
+    await message.answer(text["mainMenu"], reply_markup=await get_main_keyboard(message.from_user.id))
+    await message.delete()
 
 
 @dp.callback_query_handler(navigation_callback.filter(to="main"))
