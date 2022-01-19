@@ -20,7 +20,7 @@ async def update():
         filters = filter_worker.get_filter(post["filter_id"])
         users = users_worker.get_filtered_users(filters)
         if users:
-            text = languages_worker.get_text_on_user_language(filters["languageId_id"], "closeButton")
+            text = languages_worker.get_text(filters["languageId_id"], "closeButton")
             for user_id in users:
                 keyboard = InlineKeyboardMarkup(inline_keyboard=[
                     [
