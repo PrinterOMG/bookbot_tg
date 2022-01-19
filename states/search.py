@@ -53,6 +53,9 @@ async def search_input(message: Message, state: FSMContext):
     else:
         await main_msg.edit_text(text["searchError"],
                                  reply_markup=await get_move_keyboard(message.from_user.id, to="archive"))
+        await message.delete()
+        await state.finish()
+        return
 
     await message.delete()
     await state.update_data(main_msg=main_msg, books=result)
