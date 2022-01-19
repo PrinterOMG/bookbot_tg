@@ -6,7 +6,7 @@ from data.config import YADISK_TOKEN
 async def download_book(yandex_path):
     y = yadisk.YaDisk(token=YADISK_TOKEN)
 
-    meta = y.get_meta(yandex_path)
+    meta = y.get_meta("disk:/PLL/Библиотека v2/" + yandex_path)
     file_path = f"data/temp/{meta.name}"
     y.download(yandex_path, file_path)
 
