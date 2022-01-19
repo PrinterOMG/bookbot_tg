@@ -26,7 +26,7 @@ async def check_pay(call: CallbackQuery, callback_data: dict):
             # TODO make payment operation worker
         else:
             await call.answer(text["payError"], show_alert=True)  # waiting_for_capture
-    elif what in ("bank_card", "apple_pay", "google_pay", "yoo_money"):
+    elif what in ("bank_card", "yoo_money"):
         status = check_payment(order_id)
         if status == "succeeded":
             if subscribes_worker.check_subscribe(call.from_user.id):
