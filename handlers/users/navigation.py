@@ -27,14 +27,19 @@ async def send_main_menu(call: CallbackQuery):
 @dp.callback_query_handler(navigation_callback.filter(to="subscribes"))
 async def send_subscribes_menu(call: CallbackQuery):
     user_id = call.from_user.id
-    text = languages_worker.get_text_on_user_language(user_id, "subscribesMenu, subscribeFormat, autoPayOff, autoPayOn")
+    text = languages_worker.get_text_on_user_language(user_id,
+                                                      "subscribesMenu, activeSub, noSub, expiredSub, autoPayOff, autoPayOn")
     is_sub = subscribes_worker.is_user_have_active_subscribe(user_id)
     is_auto_pay = users_worker.is_auto_pay(user_id)
 
     if is_sub:
         subscribe_status = text["subscribeFormat"].format(end_date=is_sub)
     else:
-        subscribe_status = ""
+        is_sub_expired = subscribes_worker.is_sub_expired(user_id)
+        if is_sub_expired:
+            subscribe_status = text["expiredSub"].format(end_date=is_sub_expired)
+        else:
+            subscribe_status = text["noSub"]
 
     if is_auto_pay:
         subscribe_autopay_status = text["autoPayOn"]
@@ -42,7 +47,7 @@ async def send_subscribes_menu(call: CallbackQuery):
         subscribe_autopay_status = text["autoPayOff"]
 
     await call.message.edit_text(text["subscribesMenu"].format(subscribe=subscribe_status, auto_pay=subscribe_autopay_status),
-                                 reply_markup=await get_subscribes_keyboard(call.from_user.id))
+                                 reply_markup=await get_subscribes_keyboard(user_id))
     await call.answer()
 
 
@@ -56,9 +61,20 @@ async def send_info(call: CallbackQuery):
 
 @dp.callback_query_handler(navigation_callback.filter(to="balance"))
 async def send_balance(call: CallbackQuery):
-    text = languages_worker.get_text_on_user_language(call.from_user.id, "balanceMenu")
+    text = languages_worker.get_text_on_user_language(call.from_user.id, "balanceMenu, activeSub, noSub, expiredSub")
+    is_sub = subscribes_worker.is_user_have_active_subscribe(call.from_user.id)
 
-    await call.message.edit_text(text["balanceMenu"].format(balance=users_worker.get_balance(call.from_user.id)),
+    if is_sub:
+        subscribe_status = text["subscribeFormat"].format(end_date=is_sub)
+    else:
+        is_sub_expired = subscribes_worker.is_sub_expired(call.from_user.id)
+        if is_sub_expired:
+            subscribe_status = text["expiredSub"].format(end_date=is_sub_expired)
+        else:
+            subscribe_status = text["noSub"]
+
+    await call.message.edit_text(text["balanceMenu"].format(balance=users_worker.get_balance(call.from_user.id),
+                                                            subscribe=subscribe_status),
                                  reply_markup=await get_balance_keyboard(call.from_user.id))
     await call.answer()
 

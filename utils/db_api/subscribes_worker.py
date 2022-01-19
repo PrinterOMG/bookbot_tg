@@ -13,6 +13,17 @@ class SubscribesWorker(DatabaseCore):
 
         return False
 
+    def is_sub_expired(self, user_id):
+        sql = f"SELECT endDate FROM BookBotAdmin_subscribes WHERE user_id={user_id} AND isActive=0"
+
+        records = self.send_query(sql)
+
+        if records:
+            return records[0]["endDate"]
+
+        return False
+
+
     def create_subscribe_record(self, user_id, sub_type):
         sql = f"SELECT duration FROM BookBotAdmin_subprices WHERE subPriceId={sub_type}"
         records = self.send_query(sql)
