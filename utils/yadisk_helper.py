@@ -7,7 +7,7 @@ async def download_book(yandex_path):
     y = yadisk.YaDisk(token=YADISK_TOKEN)
 
     meta = y.get_meta(yandex_path)
-    file_path = f"data/temp/{meta.name}"
+    file_path = f"../data/temp/{meta.name}"
     y.download(yandex_path, file_path)
 
     return file_path
