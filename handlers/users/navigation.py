@@ -33,7 +33,7 @@ async def send_subscribes_menu(call: CallbackQuery):
     is_auto_pay = users_worker.is_auto_pay(user_id)
 
     if is_sub:
-        subscribe_status = text["subscribeFormat"].format(end_date=is_sub)
+        subscribe_status = text["activeSub"].format(end_date=is_sub)
     else:
         is_sub_expired = subscribes_worker.is_sub_expired(user_id)
         if is_sub_expired:
@@ -65,7 +65,7 @@ async def send_balance(call: CallbackQuery):
     is_sub = subscribes_worker.is_user_have_active_subscribe(call.from_user.id)
 
     if is_sub:
-        subscribe_status = text["subscribeFormat"].format(end_date=is_sub)
+        subscribe_status = text["activeSub"].format(end_date=is_sub)
     else:
         is_sub_expired = subscribes_worker.is_sub_expired(call.from_user.id)
         if is_sub_expired:
