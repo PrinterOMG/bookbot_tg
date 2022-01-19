@@ -12,7 +12,7 @@ async def get_fund_book_keyboard(user_id, book_id, price, is_done):
     keyboard = []
     if is_payed and is_done:
         keyboard.append([InlineKeyboardButton(text["downloadButton"], callback_data=download_fund_book.new(book_id))])
-    else:
+    elif not is_payed:
         keyboard.append([InlineKeyboardButton(text["payButton"], callback_data=buy_fund_book_callback.new(book_id, price))])
 
     if is_sub:
