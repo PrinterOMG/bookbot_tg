@@ -15,3 +15,4 @@ from . import buy_fund_book
 from . import download
 from . import progress
 from . import block
+from . import auto_pay
