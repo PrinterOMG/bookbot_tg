@@ -1,4 +1,4 @@
-from aiogram.types import CallbackQuery
+from aiogram.types import CallbackQuery, InputFile
 import os
 
 from loader import dp, users_worker, languages_worker
@@ -30,8 +30,8 @@ async def buy_book(call: CallbackQuery, callback_data: dict):
     await call.message.delete()
 
     file_path = await download_book(book["link"])
-    with open(file_path, "r") as file:
-        await call.message.answer_document(file)
+    file = InputFile(file_path)
+    await call.message.answer_document(file)
     os.remove(file_path)
 
     await call.message.answer(text["mainMenu"], reply_markup=await get_main_keyboard(call.from_user.id))
