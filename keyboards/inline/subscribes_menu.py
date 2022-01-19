@@ -1,13 +1,14 @@
-from loader import subprices_worker, languages_worker, promo_worker
+from loader import subprices_worker, languages_worker, promo_worker, subscribes_worker
 
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from .callbacks import promo_callback, buy_subscribe_callback, navigation_callback
+from .callbacks import promo_callback, buy_subscribe_callback, navigation_callback, auto_pay_callback
 
 
 async def get_subscribes_keyboard(user_id):
-    text = languages_worker.get_text_on_user_language(user_id, "buySubButton, usePromocodeButton, backButton, cancelPromoButton")
+    text = languages_worker.get_text_on_user_language(user_id, "buySubButton, usePromocodeButton, backButton, cancelPromoButton, autoPayButton ")
     sub_prices = subprices_worker.get_all_subs()
 
+    is_sub = subscribes_worker.is_user_have_active_subscribe(user_id)
     is_user_have_promo = promo_worker.is_user_have_active_promocode(user_id)
     if is_user_have_promo:
         sub_prices_discount, discount = promo_worker.get_user_discount(user_id)
@@ -30,6 +31,9 @@ async def get_subscribes_keyboard(user_id):
             [InlineKeyboardButton(text["buySubButton"].format(duration=el["duration"], price=el["value"]), callback_data=buy_subscribe_callback.new(el["subPriceId"], el["value"]))] for el in sub_prices
         ]
         keyboard.append([InlineKeyboardButton(text["usePromocodeButton"], callback_data=promo_callback.new("use"))])
+
+    if is_sub:
+        keyboard.append([InlineKeyboardButton(text["autoPayButton"], callback_data=auto_pay_callback.new(user_id))])
 
     keyboard.append([InlineKeyboardButton(text["backButton"], callback_data=navigation_callback.new("main"))])
     keyboard = InlineKeyboardMarkup(inline_keyboard=keyboard)

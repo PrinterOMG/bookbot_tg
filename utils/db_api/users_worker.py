@@ -71,3 +71,15 @@ class UsersWorker(DatabaseCore):
               "WHERE isActive=1"
 
         return self.send_query(sql)
+
+    def is_auto_pay(self, user_id):
+        sql = f"SELECT * FROM BookBotAdmin_users WHERE userId={user_id}"
+
+        response = self.send_query(sql)
+
+        return response[0]
+
+    def change_is_auto_pay(self, user_id, action):
+        sql = f"UPDATE BookBotAdmin_users SET isAutoPay={action} WHERE userId={user_id}"
+
+        self.send_query(sql)
