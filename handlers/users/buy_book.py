@@ -1,8 +1,10 @@
 from aiogram.types import CallbackQuery
+import os
 
 from loader import dp, users_worker, languages_worker
 from keyboards.inline.callbacks import buy_book_callback
 from keyboards.inline import get_balance_keyboard, get_main_keyboard
+from utils.yadisk_helper import download_book
 
 
 @dp.callback_query_handler(buy_book_callback.filter())
@@ -23,5 +25,10 @@ async def buy_book(call: CallbackQuery, callback_data: dict):
 
     await call.answer(text["buyBookOk"], show_alert=True)
     await call.message.delete()
-    await call.message.answer(link + "\nТут файл прикреплён")
+
+    file_path = await download_book(link)
+    with open(file_path, "r") as file:
+        await call.message.answer_document(file)
+    os.remove(file_path)
+
     await call.message.answer(text["mainMenu"], reply_markup=await get_main_keyboard(call.from_user.id))
