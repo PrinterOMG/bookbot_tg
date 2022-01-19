@@ -83,3 +83,32 @@ class UsersWorker(DatabaseCore):
         sql = f"UPDATE BookBotAdmin_users SET isAutoPay={action} WHERE userId={user_id}"
 
         self.send_query(sql)
+
+    def get_filtered_users(self, filters):
+        sql_add = list()
+
+        sql_add.append(f"languageId_id={filters['languageId_id']}")
+        sql_add.append(f'isActive={filters["isSubscribed"]}')
+
+        sql_add.append(f'balance>={filters["balanceFrom"]}')
+        if int(filters["balanceTo"]):
+            sql_add.append(f'balance<={filters["balanceTo"]}')
+
+        sql_add.append(f'subscribeTime>={filters["subscribeTimeFrom"]}')
+        if int(filters["subscribeTimeTo"]):
+            sql_add.append(f'subscribeTime<={filters["subscribeTimeTo"]}')
+
+        sql_add.append(f'deposit>={filters["depositFrom"]}')
+        if int(filters["depositTo"]):
+            sql_add.append(f'deposit<={filters["depositTo"]}')
+
+        sql_add = " AND ".join(sql_add)
+
+        sql = f"SELECT userId FROM BookBotAdmin_users users " \
+              f"LEFT JOIN BookBotAdmin_subscribes subs on users.userId = subs.user_id " \
+              f"WHERE {sql_add}"
+
+        records = self.send_query(sql)
+        if records:
+            return [el["userId"] for el in records]
+        return False

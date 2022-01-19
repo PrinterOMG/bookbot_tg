@@ -16,21 +16,21 @@ async def update():
         questions_worker.set_is_answered_true(question["questionId"])
 
     posts = post_worker.get_posts()
-    subs = users_worker.get_all_subs()
     for post in posts:
-        language_id = filter_worker.get_filter(post["filter_id"])["languageId_id"]
-        for sub in subs:
-            if sub["languageId_id"] == language_id:
-                text = languages_worker.get_text_on_user_language(sub["userId"], "closeButton")
+        filters = filter_worker.get_filter(post["filter_id"])
+        users = users_worker.get_filtered_users(filters)
+        if users:
+            text = languages_worker.get_text_on_user_language(filters["languageId_id"], "closeButton")
+            for user_id in users:
                 keyboard = InlineKeyboardMarkup(inline_keyboard=[
                     [
                         InlineKeyboardButton(text["closeButton"], callback_data="close")
                     ]
                 ])
                 if post["photo"]:
-                    await bot.send_photo(sub["userId"], InputFile(r"../admin/" + post["photo"]), caption=post["title"] + "\n" + post["text"],
+                    await bot.send_photo(user_id, InputFile(r"../admin/" + post["photo"]), caption=post["title"] + "\n" + post["text"],
                                          reply_markup=keyboard)
                 else:
-                    await bot.send_message(sub["userId"], text=post["title"] + "\n" + post["text"], reply_markup=keyboard)
-        post_worker.set_is_send(post["postId"])
+                    await bot.send_message(user_id, text=post["title"] + "\n" + post["text"], reply_markup=keyboard)
+            post_worker.set_is_send(post["postId"])
 
