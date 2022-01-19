@@ -35,7 +35,8 @@ async def search_input(message: Message, state: FSMContext):
             price = result["price"][i]
 
             books.append(
-                text["bookArchiveFormat"].format(id=i + 1, title=title, author=author, genre=genre, year=year, price=price))
+                text["bookArchiveFormat"].format(id=i + 1, title=title, author=author, genre=genre, year=year,
+                                                 price=price))
 
         books = "\n".join(books)
 
@@ -53,6 +54,9 @@ async def search_input(message: Message, state: FSMContext):
     else:
         await main_msg.edit_text(text["searchError"],
                                  reply_markup=await get_move_keyboard(message.from_user.id, to="archive"))
+        await message.delete()
+        await state.finish()
+        return
 
     await message.delete()
     await state.update_data(main_msg=main_msg, books=result)
@@ -65,7 +69,8 @@ async def book_input(message: Message, state: FSMContext):
     books = (await state.get_data("books"))["books"]
     main_msg = (await state.get_data("main_msg"))["main_msg"]
 
-    text = languages_worker.get_text_on_user_language(message.from_user.id, "bookInputError, bookBuyMenu, bookArchiveFormat")
+    text = languages_worker.get_text_on_user_language(message.from_user.id,
+                                                      "bookInputError, bookBuyMenu, bookArchiveFormat")
 
     if not book_id.isdigit() or (int(book_id) - 1 not in books["title"]):
         await main_msg.edit_text(text["bookInputError"],
@@ -73,14 +78,13 @@ async def book_input(message: Message, state: FSMContext):
     else:
         book_id = int(book_id) - 1
 
-        book = text["bookArchiveFormat"].format(id=book_id + 1, title=books["title"][book_id], genre=books["genre"][book_id],
-                                         author=books["author"][book_id], year=books["year"][book_id],
-                                         price=books["price"][book_id])
+        book = text["bookArchiveFormat"].format(id=book_id + 1, title=books["title"][book_id],
+                                                genre=books["genre"][book_id],
+                                                author=books["author"][book_id], year=books["year"][book_id],
+                                                price=books["price"][book_id])
 
         await main_msg.edit_text(text["bookBuyMenu"].format(book=book),
-                                 reply_markup=await get_book_buy_keyboard(message.from_user.id,
-                                                                          books["link"][book_id].replace(":", ";"),
-                                                                          books["price"][book_id]))
+                                 reply_markup=await get_book_buy_keyboard(message.from_user.id, book_id))
 
     await state.finish()
     await message.delete()
