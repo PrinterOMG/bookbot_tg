@@ -26,15 +26,22 @@ async def send_main_menu(call: CallbackQuery):
 
 @dp.callback_query_handler(navigation_callback.filter(to="subscribes"))
 async def send_subscribes_menu(call: CallbackQuery):
-    text = languages_worker.get_text_on_user_language(call.from_user.id, "subscribesMenu, subscribeFormat")
-    is_sub = subscribes_worker.is_user_have_active_subscribe(call.from_user.id)
+    user_id = call.from_user.id
+    text = languages_worker.get_text_on_user_language(user_id, "subscribesMenu, subscribeFormat, autoPayOff, autoPayOn")
+    is_sub = subscribes_worker.is_user_have_active_subscribe(user_id)
+    is_auto_pay = users_worker.is_auto_pay(user_id)
 
     if is_sub:
         subscribe_status = text["subscribeFormat"].format(end_date=is_sub)
     else:
         subscribe_status = ""
 
-    await call.message.edit_text(text["subscribesMenu"].format(subscribe=subscribe_status),
+    if is_auto_pay:
+        subscribe_autopay_status = text["autoPayOn"]
+    else:
+        subscribe_autopay_status = text["autoPayOff"]
+
+    await call.message.edit_text(text["subscribesMenu"].format(subscribe=subscribe_status, auto_pay=subscribe_autopay_status),
                                  reply_markup=await get_subscribes_keyboard(call.from_user.id))
     await call.answer()
 

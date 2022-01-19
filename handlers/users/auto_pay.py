@@ -9,7 +9,6 @@ async def auto_pay(call: CallbackQuery):
     user_id = call.from_user.id
     text = languages_worker.get_text_on_user_language(user_id, "autoPayOn, autoPayOff")
     is_auto_pay = users_worker.is_auto_pay(user_id)
-    print(is_auto_pay)
 
     if is_auto_pay:
         await call.answer(text["autoPayOff"], show_alert=True)
