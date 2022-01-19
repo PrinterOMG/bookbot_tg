@@ -5,28 +5,31 @@ from loader import dp, users_worker, languages_worker
 from keyboards.inline.callbacks import buy_book_callback
 from keyboards.inline import get_balance_keyboard, get_main_keyboard
 from utils.yadisk_helper import download_book
+from utils.csv_worker import get_book
 
 
 @dp.callback_query_handler(buy_book_callback.filter())
 async def buy_book(call: CallbackQuery, callback_data: dict):
-    link = callback_data["link"].replace(";", ":")
-    price = int(callback_data["price"])
+    book_id = int(callback_data["book_id"])
     user_balance = users_worker.get_balance(call.from_user.id)
 
-    text = languages_worker.get_text_on_user_language(call.from_user.id, "buyBookError, buyBookOk, balanceMenu, mainMenu")
+    text = languages_worker.get_text_on_user_language(call.from_user.id,
+                                                      "buyBookError, buyBookOk, balanceMenu, mainMenu, bookFile")
 
-    if price > user_balance:
+    book = await get_book(text["bookFile"], book_id)
+
+    if int(book["price"]) > user_balance:
         await call.answer(text["buyBookError"], show_alert=True)
         await call.message.edit_text(text["balanceMenu"].format(balance=user_balance),
                                      reply_markup=await get_balance_keyboard(call.from_user.id))
         return
 
-    users_worker.change_balance(call.from_user.id, f"-{price}")
+    users_worker.change_balance(call.from_user.id, f"-{book['price']}")
 
     await call.answer(text["buyBookOk"], show_alert=True)
     await call.message.delete()
 
-    file_path = await download_book(link)
+    file_path = await download_book(book["link"])
     with open(file_path, "r") as file:
         await call.message.answer_document(file)
     os.remove(file_path)

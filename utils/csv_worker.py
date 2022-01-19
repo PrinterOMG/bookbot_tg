@@ -9,6 +9,16 @@ async def search(filename, s_type, value):
     return reader[reader[s_type].str.contains(str(value), case=False)].to_dict()
 
 
+async def get_book(filename, book_id):
+    reader = pd.read_csv(filename, delimiter=";")
+
+    result = reader[reader.index == book_id].to_dict()
+    for key in result.keys():
+        result[key] = result[key][book_id]
+
+    return result
+
+
 async def create_txt_with_books(books, user_id):
     filename = f"data/temp/{user_id}_books.txt"
     async with aiof.open(filename, "w") as out:
