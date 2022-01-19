@@ -77,7 +77,7 @@ class UsersWorker(DatabaseCore):
 
         response = self.send_query(sql)
 
-        return response[0]
+        return response[0]["isAutoPay"]
 
     def change_is_auto_pay(self, user_id, action):
         sql = f"UPDATE BookBotAdmin_users SET isAutoPay={action} WHERE userId={user_id}"
