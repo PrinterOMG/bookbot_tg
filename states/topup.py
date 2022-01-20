@@ -2,7 +2,7 @@ from aiogram.types import Message
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.dispatcher import FSMContext
 
-from loader import dp, promo_worker, languages_worker, settings_worker
+from loader import dp, promo_worker, languages_worker, settings_worker, statistic_worker
 from keyboards.inline import get_move_keyboard, get_payment_keyboard
 from utils.csv_worker import search
 
@@ -30,6 +30,7 @@ async def search_input(message: Message, state: FSMContext):
         else:
             await main_msg.edit_text(text["paymentMenu"],
                                      reply_markup=await get_payment_keyboard(message.from_user.id, value=value, back="balance"))
+            statistic_worker.update_interrupt_payments("+")
 
     await message.delete()
     await state.finish()

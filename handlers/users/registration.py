@@ -2,7 +2,7 @@ from aiogram import types
 from aiogram.dispatcher.filters.builtin import CommandStart
 from aiogram.types import CallbackQuery
 
-from loader import dp, users_worker, referral_worker, languages_worker, settings_worker
+from loader import dp, users_worker, referral_worker, languages_worker, settings_worker, statistic_worker
 from keyboards.inline import get_languages_keyboard, get_main_keyboard
 from keyboards.inline.callbacks import language_callback
 
@@ -37,6 +37,8 @@ async def language_choose(call: CallbackQuery, callback_data: dict):
     users_worker.register_new_user(call.from_user.id, call.from_user.full_name, lang_id, ref_id)
     if ref_id != "NULL":
         referral_worker.add_to_register_count(ref_id)
+
+    statistic_worker.init_update_no_buy_users()
 
     text = languages_worker.get_text(lang_id, "mainMenu")
 

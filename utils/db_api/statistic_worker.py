@@ -30,8 +30,8 @@ class StatisticWorker(DatabaseCore):
 
         self.send_query(sql)
 
-    def update_block_users(self):
-        sql = f"UPDATE BookBotAdmin_statistic SET blockUsersCounter=blockUsersCounter+1"
+    def update_block_users(self, action):
+        sql = f"UPDATE BookBotAdmin_statistic SET blockUsersCounter=blockUsersCounter{action}1"
 
         self.send_query(sql)
 

@@ -1,7 +1,7 @@
 from aiogram.types import CallbackQuery, PreCheckoutQuery, ContentType, Message
 
 from keyboards.inline import get_balance_keyboard
-from loader import dp, languages_worker, users_worker, subscribes_worker, promo_worker, bot
+from loader import dp, languages_worker, users_worker, subscribes_worker, promo_worker, bot, statistic_worker
 
 from keyboards.inline.callbacks import check_callback
 
@@ -23,6 +23,7 @@ async def check_pay(call: CallbackQuery, callback_data: dict):
             users_worker.change_balance(call.from_user.id, f"+{amount}")
             await call.answer(text["payOk"], show_alert=True)
             await send_balance(call)
+            statistic_worker.update_interrupt_payments("-")
             # TODO make payment operation worker
         else:
             await call.answer(text["payError"], show_alert=True)  # waiting_for_capture
@@ -35,7 +36,9 @@ async def check_pay(call: CallbackQuery, callback_data: dict):
                 subscribes_worker.create_subscribe_record(call.from_user.id, sub_type)
             await call.answer(text["payOk"], show_alert=True)
             users_worker.add_to_deposit(call.from_user.id, amount)
-
+            statistic_worker.update_all_subs_counter()
+            statistic_worker.update_no_buy_users()
+            statistic_worker.update_interrupt_payments("-")
             sub_prices, duration = promo_worker.get_user_discount(call.from_user.id)
             if sub_prices and (int(sub_type) in sub_prices):
                 promo_worker.use_promocode(call.from_user.id)
@@ -52,6 +55,7 @@ async def check_pay(call: CallbackQuery, callback_data: dict):
                 users_worker.change_balance(call.from_user.id, f"+{amount}")
                 await call.answer(text["payOk"], show_alert=True)
                 await send_balance(call)
+                statistic_worker.update_interrupt_payments("-")
             else:
                 await call.answer(text["payError"], show_alert=True)
         else:
