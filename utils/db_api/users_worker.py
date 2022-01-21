@@ -2,10 +2,10 @@ from .db_core import DatabaseCore
 
 
 class UsersWorker(DatabaseCore):
-    def register_new_user(self, user_id, username, language_id, ref):
+    def register_new_user(self, user_id, username, language_id, ref, mention):
         sql = f"INSERT INTO " \
-              f"BookBotAdmin_users(userId, username, balance, isBlock, showProgress, deposit, subscribeTime, languageId_id, referral_id, notEndPayment, isAutoPay, lastMenu) " \
-              f"VALUES({user_id}, '{username}', 0, 0, 0, 0, 0, {language_id}, {ref}, 0, 1, 0)"
+              f"BookBotAdmin_users(userId, username, balance, isBlock, showProgress, deposit, subscribeTime, languageId_id, referral_id, notEndPayment, isAutoPay, lastMenu, mention) " \
+              f"VALUES({user_id}, '{username}', 0, 0, 0, 0, 0, {language_id}, {ref}, 0, 1, 0, '{mention}')"
 
         self.send_query(sql)
 
