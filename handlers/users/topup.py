@@ -69,8 +69,23 @@ async def process_pre_checkout_query(pre_checkout_query: PreCheckoutQuery):
 
 @dp.message_handler(content_types=ContentType.SUCCESSFUL_PAYMENT)
 async def process_successful_payment(message: Message):
-    text = languages_worker.get_text_on_user_language(message.chat.id, "balanceMenu")
+    text = languages_worker.get_text_on_user_language(message.chat.id,
+                                                      "balanceMenu, balanceMenu, activeSub, noSub, expiredSub")
     users_worker.change_balance(message.chat.id, f"+{message.successful_payment.total_amount // 100}")
+
     await message.delete()
-    await message.answer(text["balanceMenu"].format(balance=users_worker.get_balance(message.chat.id)),
+
+    is_sub = subscribes_worker.is_user_have_active_subscribe(message.chat.id)
+
+    if is_sub:
+        subscribe_status = text["activeSub"].format(end_date=is_sub)
+    else:
+        is_sub_expired = subscribes_worker.is_sub_expired(message.chat.id)
+        if is_sub_expired:
+            subscribe_status = text["expiredSub"].format(end_date=is_sub_expired)
+        else:
+            subscribe_status = text["noSub"]
+
+    await message.answer(text["balanceMenu"].format(balance=users_worker.get_balance(message.chat.id),
+                                                    subscribe=subscribe_status),
                          reply_markup=await get_balance_keyboard(message.chat.id))

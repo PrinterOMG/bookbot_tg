@@ -2,7 +2,7 @@ from aiogram.types import CallbackQuery, InputFile
 import os
 
 from keyboards.inline import get_main_keyboard
-from loader import dp, languages_worker, books_worker
+from loader import dp, languages_worker, books_worker, users_worker
 from keyboards.inline.callbacks import download_fund_book
 from utils.yadisk_helper import download_book
 
@@ -20,5 +20,7 @@ async def download_fund_book(call: CallbackQuery, callback_data: dict):
     await call.message.answer_document(file)
     os.remove(file_path)
 
-    await call.message.answer(text["mainMenu"], reply_markup=await get_main_keyboard(call.from_user.id))
+    main_msg = await call.message.answer(text=text["mainMenu"], reply_markup=await get_main_keyboard(call.from_user.id))
+    users_worker.update_last_menu(call.from_user.id, main_msg.message_id)
+
     await call.answer()
