@@ -6,6 +6,8 @@ async def search(filename, s_type, value):
     reader = pd.read_csv("../admin/" + filename, delimiter=";")
     reader.year = reader.year.astype(str)
 
+    print(reader.head())
+
     return reader[reader[s_type].str.contains(str(value), case=False)].to_dict()
 
 

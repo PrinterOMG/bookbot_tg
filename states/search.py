@@ -24,6 +24,7 @@ async def search_input(message: Message, state: FSMContext):
                                                       "bookFile, searchError, searchTextResult, searchFileResult, bookArchiveFormat")
 
     result = await search(text["bookFile"], search_type, value)
+    print(result)
 
     if result["title"]:
         books = list()
