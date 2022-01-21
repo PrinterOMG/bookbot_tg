@@ -17,4 +17,5 @@ async def auto_pay(call: CallbackQuery):
     else:
         await call.answer(text["autoPayOn"], show_alert=True)
         users_worker.change_is_auto_pay(user_id, "True")
+
     await send_subscribes_menu(call)
