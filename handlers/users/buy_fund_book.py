@@ -4,6 +4,7 @@ from keyboards.inline import get_balance_keyboard, get_fundraising_keyboard
 from loader import dp, languages_worker, users_worker, books_worker
 from keyboards.inline.callbacks import buy_fund_book_callback
 from utils.check_book import check_book
+from .navigation import send_balance
 
 
 @dp.callback_query_handler(buy_fund_book_callback.filter())
@@ -15,8 +16,7 @@ async def buy_fund_book(call: CallbackQuery, callback_data: dict):
 
     if price > balance:
         await call.answer(text["buyBookError"], show_alert=True)
-        await call.message.edit_text(text["balanceMenu"].format(balance=balance),
-                                     reply_markup=await get_balance_keyboard(call.from_user.id))
+        await send_balance(call)
         return
 
     await call.answer(text["buyBookOk"], show_alert=True)
