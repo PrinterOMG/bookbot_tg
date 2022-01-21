@@ -2,6 +2,7 @@ from aiogram.types import CallbackQuery
 
 from keyboards.inline.callbacks import auto_pay_callback
 from loader import dp, languages_worker, users_worker
+from navigation import send_subscribes_menu
 
 
 @dp.callback_query_handler(auto_pay_callback.filter())
@@ -16,3 +17,4 @@ async def auto_pay(call: CallbackQuery):
     else:
         await call.answer(text["autoPayOn"], show_alert=True)
         users_worker.change_is_auto_pay(user_id, "True")
+    await send_subscribes_menu(call)
