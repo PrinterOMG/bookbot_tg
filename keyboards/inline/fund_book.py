@@ -5,7 +5,8 @@ from keyboards.inline.callbacks import navigation_callback, buy_fund_book_callba
 
 
 async def get_fund_book_keyboard(user_id, book_id, price, is_done):
-    text = languages_worker.get_text_on_user_language(user_id, "payButton, backButton, downloadButton, showProgressButton")
+    text = languages_worker.get_text_on_user_language(user_id,
+                                                      "payButton, backButton, downloadButton, showProgressButton")
     is_payed = books_worker.is_user_payed_for_book(user_id, book_id)
     is_sub = subscribes_worker.is_user_have_active_subscribe(user_id)
 

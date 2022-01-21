@@ -35,6 +35,7 @@ async def language_choose(call: CallbackQuery, callback_data: dict):
     ref_id = callback_data["ref"]
 
     users_worker.register_new_user(call.from_user.id, call.from_user.full_name, lang_id, ref_id)
+    statistic_worker.update_block_users("+")
     if ref_id != "NULL":
         referral_worker.add_to_register_count(ref_id)
 
