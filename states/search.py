@@ -28,7 +28,7 @@ async def search_input(message: Message, state: FSMContext):
 
     if result["title"]:
         books = list()
-        for i in range(len(result["title"].values())):
+        for i in result["title"].keys():
             title = result["title"][i]
             author = result["author"][i]
             genre = result["genre"][i]
