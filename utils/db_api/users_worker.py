@@ -89,7 +89,7 @@ class UsersWorker(DatabaseCore):
         sql_add = list()
 
         sql_add.append(f"languageId_id={filters['languageId_id']}")
-        sql_add.append(f'isActive={filters["isSubscribed"]}')
+        sql_add.append(f'subscribeStatus_id={filters["subscribeStatus_id"]}')
         sql_add.append(f'notEndPayment={filters["notEndPayment"]}')
 
         sql_add.append(f'balance>={filters["balanceFrom"]}')
@@ -125,3 +125,8 @@ class UsersWorker(DatabaseCore):
         sql = f"UPDATE BookBotAdmin_users SET lastMenu={new_menu} WHERE userId={user_id}"
 
         self.send_query(sql)
+
+    def get_all_users(self):
+        sql = f"SELECT * FROM BookBotAdmin_users"
+
+        return self.send_query(sql)
