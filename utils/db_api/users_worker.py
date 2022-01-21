@@ -119,7 +119,7 @@ class UsersWorker(DatabaseCore):
         sql = f"SELECT lastMenu FROM BookBotAdmin_users WHERE userId={user_id}"
 
         record = self.send_query(sql)[0]
-        return int(record)
+        return int(record["lastMenu"])
 
     def update_last_menu(self, user_id, new_menu):
         sql = f"UPDATE BookBotAdmin_users SET lastMenu={new_menu} WHERE userId={user_id}"
