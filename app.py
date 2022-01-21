@@ -16,7 +16,7 @@ async def scheduler():
 
     while True:
         await aioschedule.run_pending()
-        await asyncio.sleep(15)
+        await asyncio.sleep(1)
 
 
 async def on_startup(dispatcher):
