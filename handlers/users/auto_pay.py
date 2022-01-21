@@ -2,7 +2,7 @@ from aiogram.types import CallbackQuery
 
 from keyboards.inline.callbacks import auto_pay_callback
 from loader import dp, languages_worker, users_worker
-from navigation import send_subscribes_menu
+from .navigation import send_subscribes_menu
 
 
 @dp.callback_query_handler(auto_pay_callback.filter())
