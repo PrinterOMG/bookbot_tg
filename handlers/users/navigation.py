@@ -1,7 +1,7 @@
 from aiogram.dispatcher import FSMContext
 from aiogram.types import CallbackQuery, Message
 
-from loader import dp, languages_worker, users_worker, subscribes_worker
+from loader import dp, languages_worker, users_worker, subscribes_worker, bot
 from keyboards.inline import get_main_keyboard, get_subscribes_keyboard, get_move_keyboard, get_balance_keyboard, \
     get_cancel_keyboard, get_search_keyboard, get_fundraising_keyboard
 from keyboards.inline.callbacks import navigation_callback
@@ -12,7 +12,12 @@ from states.make_question import QuestionInput
 async def send_menu(message: Message):
     text = languages_worker.get_text_on_user_language(message.from_user.id, "mainMenu")
 
-    await message.answer(text["mainMenu"], reply_markup=await get_main_keyboard(message.from_user.id))
+    last_menu = users_worker.get_last_menu(message.from_user.id)
+    if last_menu:
+        await bot.delete_message(message.from_user.id, last_menu)
+
+    main_msg = await message.answer(text=text["mainMenu"], reply_markup=await get_main_keyboard(message.from_user.id))
+    users_worker.update_last_menu(message.from_user.id, main_msg.message_id)
     await message.delete()
 
 

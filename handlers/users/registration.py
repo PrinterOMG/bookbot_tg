@@ -2,7 +2,7 @@ from aiogram import types
 from aiogram.dispatcher.filters.builtin import CommandStart
 from aiogram.types import CallbackQuery
 
-from loader import dp, users_worker, referral_worker, languages_worker, settings_worker, statistic_worker
+from loader import dp, users_worker, referral_worker, languages_worker, settings_worker, statistic_worker, bot
 from keyboards.inline import get_languages_keyboard, get_main_keyboard
 from keyboards.inline.callbacks import language_callback
 
@@ -24,8 +24,12 @@ async def bot_start(message: types.Message):
         await message.delete()
     else:
         text = languages_worker.get_text_on_user_language(message.from_user.id, "mainMenu")
+        last_menu = users_worker.get_last_menu(message.from_user.id)
+        if last_menu:
+            await bot.delete_message(message.from_user.id, last_menu)
 
-        await message.answer(text=text["mainMenu"], reply_markup=await get_main_keyboard(message.from_user.id))
+        main_msg = await message.answer(text=text["mainMenu"], reply_markup=await get_main_keyboard(message.from_user.id))
+        users_worker.update_last_menu(message.from_user.id, main_msg.message_id)
         await message.delete()
 
 
@@ -42,5 +46,6 @@ async def language_choose(call: CallbackQuery, callback_data: dict):
 
     text = languages_worker.get_text(lang_id, "mainMenu")
 
-    await call.message.edit_text(text=text["mainMenu"], reply_markup=await get_main_keyboard(call.from_user.id))
+    main_msg = await call.message.edit_text(text=text["mainMenu"], reply_markup=await get_main_keyboard(call.from_user.id))
+    users_worker.update_last_menu(call.from_user.id, main_msg.message_id)
     await call.answer()

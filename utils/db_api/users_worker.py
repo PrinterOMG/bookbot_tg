@@ -4,8 +4,8 @@ from .db_core import DatabaseCore
 class UsersWorker(DatabaseCore):
     def register_new_user(self, user_id, username, language_id, ref):
         sql = f"INSERT INTO " \
-              f"BookBotAdmin_users(userId, username, balance, isBlock, showProgress, deposit, subscribeTime, languageId_id, referral_id, notEndPayment, isAutoPay) " \
-              f"VALUES({user_id}, '{username}', 0, 0, 0, 0, 0, {language_id}, {ref}, 0, 1)"
+              f"BookBotAdmin_users(userId, username, balance, isBlock, showProgress, deposit, subscribeTime, languageId_id, referral_id, notEndPayment, isAutoPay, lastMenu) " \
+              f"VALUES({user_id}, '{username}', 0, 0, 0, 0, 0, {language_id}, {ref}, 0, 1, 0)"
 
         self.send_query(sql)
 
@@ -90,6 +90,7 @@ class UsersWorker(DatabaseCore):
 
         sql_add.append(f"languageId_id={filters['languageId_id']}")
         sql_add.append(f'isActive={filters["isSubscribed"]}')
+        sql_add.append(f'notEndPayment={filters["notEndPayment"]}')
 
         sql_add.append(f'balance>={filters["balanceFrom"]}')
         if int(filters["balanceTo"]):
@@ -113,3 +114,14 @@ class UsersWorker(DatabaseCore):
         if records:
             return [el["userId"] for el in records]
         return False
+
+    def get_last_menu(self, user_id):
+        sql = f"SELECT lastMenu FROM BookBotAdmin_users WHERE userId={user_id}"
+
+        record = self.send_query(sql)[0]
+        return int(record)
+
+    def update_last_menu(self, user_id, new_menu):
+        sql = f"UPDATE BookBotAdmin_users SET lastMenu={new_menu} WHERE userId={user_id}"
+
+        self.send_query(sql)
