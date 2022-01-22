@@ -7,8 +7,12 @@ from utils.db_api import UsersWorker, LanguagesWorker, ReferralWorker, SubPrices
 from utils.db_api import QuestionsWorker, BooksWorker, SubscribesWorker, OperationsWorker
 
 bot = Bot(token=config.BOT_TOKEN, parse_mode=types.ParseMode.HTML)
+print('bot')
 storage = MemoryStorage()
+print('storage')
+
 dp = Dispatcher(bot, storage=storage)
+print("dp")
 
 users_worker = UsersWorker(db_name=config.DB_NAME, password=config.DB_PASSWORD, username=config.DB_USER, host=config.DB_HOST)
 languages_worker = LanguagesWorker(db_name=config.DB_NAME, password=config.DB_PASSWORD, username=config.DB_USER, host=config.DB_HOST)
@@ -23,3 +27,4 @@ operations_worker = OperationsWorker(db_name=config.DB_NAME, password=config.DB_
 post_worker = PostWorker(db_name=config.DB_NAME, password=config.DB_PASSWORD, username=config.DB_USER, host=config.DB_HOST)
 filter_worker = FilterWorker(db_name=config.DB_NAME, password=config.DB_PASSWORD, username=config.DB_USER, host=config.DB_HOST)
 statistic_worker = StatisticWorker(db_name=config.DB_NAME, password=config.DB_PASSWORD, username=config.DB_USER, host=config.DB_HOST)
+print("workers")
