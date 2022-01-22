@@ -10,8 +10,12 @@ from utils.yadisk_helper import download_book
 @dp.callback_query_handler(download_fund_book.filter())
 async def download_fund_book(call: CallbackQuery, callback_data: dict):
     book_id = int(callback_data["book_id"])
-    text = languages_worker.get_text_on_user_language(call.from_user.id, "mainMenu")
+    text = languages_worker.get_text_on_user_language(call.from_user.id, "mainMenu, fundNotEndError")
     book = books_worker.get_book(book_id)
+
+    if not book["isDone"]:
+        await call.answer(text["fundNotEndError"], show_alert=True)
+        return
 
     await call.message.delete()
 

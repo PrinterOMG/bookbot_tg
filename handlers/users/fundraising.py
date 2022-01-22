@@ -45,5 +45,5 @@ async def send_fundraising_book_menu(call: CallbackQuery, callback_data: dict):
         price=price
     )
     await call.message.edit_text(message,
-                                 reply_markup=await get_fund_book_keyboard(call.from_user.id, book_id, price, book["isDone"]))
+                                 reply_markup=await get_fund_book_keyboard(call.from_user.id, book_id, price))
     await call.answer()
