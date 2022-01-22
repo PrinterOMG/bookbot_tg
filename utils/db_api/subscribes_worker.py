@@ -23,7 +23,6 @@ class SubscribesWorker(DatabaseCore):
 
         return False
 
-
     def create_subscribe_record(self, user_id, sub_type):
         sql = f"SELECT duration FROM BookBotAdmin_subprices WHERE subPriceId={sub_type}"
         records = self.send_query(sql)
@@ -56,3 +55,10 @@ class SubscribesWorker(DatabaseCore):
         if response:
             return True
         return False
+
+    def get_all_active_sub(self):
+        sql = f"SELECT * FROM BookBotAdmin_subscribes WHERE isActive=1"
+
+        response = self.send_query(sql)
+
+        return response

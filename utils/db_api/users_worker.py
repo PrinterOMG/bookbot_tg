@@ -139,3 +139,10 @@ class UsersWorker(DatabaseCore):
         sql = f"UPDATE BookBotAdmin_users SET subscribeTime=subscribeTime+{sub_duration} WHERE userId={user_id}"
 
         self.send_query(sql)
+
+    def get_payment_method(self, user_id):
+        sql = f"SELECT paymentId FROM BookBotAdmin_users WHERE userId={user_id}"
+
+        response = self.send_query(sql)
+
+        return response[0]["paymentId"]
