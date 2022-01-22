@@ -26,9 +26,9 @@ async def on_startup(dispatcher):
     # Уведомляет про запуск
     await on_startup_notify(dispatcher)
 
-    # asyncio.create_task(scheduler())
+    asyncio.create_task(scheduler())
 
 
 if __name__ == '__main__':
-    executor.start_polling(dp, on_startup=on_startup)
+    executor.start_polling(dp, skip_updates=False, on_startup=on_startup)
 
