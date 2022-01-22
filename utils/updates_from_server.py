@@ -19,7 +19,9 @@ async def update():
 
     posts = post_worker.get_posts()
     for post in posts:
+        print(post)
         if post["filter_id"]:
+            print("with_filter")
             filters = filter_worker.get_filter(post["filter_id"])
             users = users_worker.get_filtered_users(filters)
             if users:
@@ -42,6 +44,7 @@ async def update():
                         print('post send error', e)
                 post_worker.set_is_send(post["postId"])
         else:
+            print("no_filter")
             users = users_worker.get_all_users()
             if users:
                 for user in users:
