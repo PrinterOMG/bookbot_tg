@@ -24,6 +24,12 @@ async def buy_book(call: CallbackQuery, callback_data: dict):
         await send_balance(call)
         return
 
+    try:
+        file_path = await download_book(book["link"])
+    except:
+        await call.answer(text["downloadError"], show_alert=True)
+        return
+
     users_worker.change_balance(call.from_user.id, f"-{book['price']}")
 
     await call.answer(text["buyBookOk"], show_alert=True)
@@ -31,12 +37,6 @@ async def buy_book(call: CallbackQuery, callback_data: dict):
 
     statistic_worker.update_archive_books_count()
     statistic_worker.update_archive_books_sum(book['price'])
-
-    try:
-        file_path = await download_book(book["link"])
-    except:
-        await call.answer(text["downloadError"], show_alert=True)
-        return
 
     file = InputFile(file_path)
     await call.message.answer_document(file)
