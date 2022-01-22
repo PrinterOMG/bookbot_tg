@@ -16,8 +16,8 @@ async def download_book(yandex_path):
 # def check():
 #     y = yadisk.YaDisk(token=YADISK_TOKEN)
 #
-#     [print(file.name) for file in y.listdir("disk:/PLL/Библиотека v2/I. Экономика/Кейнс Д. Общая теория занятости.pdf")]
+#     [print(file.name) for file in y.listdir("disk:/PLL/Библиотека v2/I. Экономика/Кейнс Д. Общая теория занятости/")]
+#     y.download("disk:/PLL/Библиотека v2/I. Экономика/Кейнс Д. Общая теория занятости/Кейнс Д. Общая теория занятости.pdf", "test.pdf")
+#
 #
 # check()
-
-

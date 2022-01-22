@@ -10,7 +10,7 @@ from utils.yadisk_helper import download_book
 @dp.callback_query_handler(download_fund_book.filter())
 async def download_fund_book(call: CallbackQuery, callback_data: dict):
     book_id = int(callback_data["book_id"])
-    text = languages_worker.get_text_on_user_language(call.from_user.id, "mainMenu, fundNotEndError")
+    text = languages_worker.get_text_on_user_language(call.from_user.id, "mainMenu, fundNotEndError, downloadError")
     book = books_worker.get_book(book_id)
 
     if not book["isDone"]:
@@ -19,7 +19,12 @@ async def download_fund_book(call: CallbackQuery, callback_data: dict):
 
     await call.message.delete()
 
-    file_path = await download_book(book["link"])
+    try:
+        file_path = await download_book(book["link"])
+    except:
+        await call.answer(text["downloadError"], show_alert=True)
+        return
+
     file = InputFile(file_path)
     await call.message.answer_document(file)
     os.remove(file_path)
