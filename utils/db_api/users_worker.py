@@ -130,3 +130,12 @@ class UsersWorker(DatabaseCore):
         sql = f"SELECT * FROM BookBotAdmin_users"
 
         return self.send_query(sql)
+
+    def update_sub_time(self, user_id, sub_type):
+        sql = f"SELECT duration FROM BookBotAdmin_subprices WHERE subPriceId={sub_type}"
+
+        sub_duration = self.send_query(sql)[0]["duration"]
+
+        sql = f"UPDATE BookBotAdmin_users SET subscribeTime=subscribeTime+{sub_duration} WHERE userId={user_id}"
+
+        self.send_query(sql)
