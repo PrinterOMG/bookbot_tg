@@ -12,7 +12,9 @@ async def update():
                 InlineKeyboardButton(text["closeButton"], callback_data="close")
             ]
         ])
-        await bot.send_message(question["fromUser_id"], text=text["answerText"].format(question=question["text"], answer=question["answer"]), reply_markup=keyboard)
+        await bot.send_message(question["fromUser_id"],
+                               text=text["answerText"].format(question=question["text"], answer=question["answer"]),
+                               reply_markup=keyboard)
         questions_worker.set_is_answered_true(question["questionId"])
 
     posts = post_worker.get_posts()
@@ -30,10 +32,12 @@ async def update():
                     ])
                     try:
                         if post["photo"]:
-                            await bot.send_photo(user_id, InputFile(r"../admin/" + post["photo"]), caption=post["title"] + "\n" + post["text"],
+                            await bot.send_photo(user_id, InputFile(r"../admin/" + post["photo"]),
+                                                 caption=post["title"] + "\n" + post["text"],
                                                  reply_markup=keyboard)
                         else:
-                            await bot.send_message(user_id, text=post["title"] + "\n" + post["text"], reply_markup=keyboard)
+                            await bot.send_message(user_id, text=post["title"] + "\n" + post["text"],
+                                                   reply_markup=keyboard)
                     except Exception as e:
                         print('post send error', e)
                 post_worker.set_is_send(post["postId"])
@@ -47,9 +51,14 @@ async def update():
                             InlineKeyboardButton(text["closeButton"], callback_data="close")
                         ]
                     ])
-                    if post["photo"]:
-                        await bot.send_photo(user["userId"], InputFile(r"../admin/" + post["photo"]), caption=post["title"] + "\n" + post["text"],
-                                             reply_markup=keyboard)
-                    else:
-                        await bot.send_message(user["userId"], text=post["title"] + "\n" + post["text"], reply_markup=keyboard)
+                    try:
+                        if post["photo"]:
+                            await bot.send_photo(user["userId"], InputFile(r"../admin/" + post["photo"]),
+                                                 caption=post["title"] + "\n" + post["text"],
+                                                 reply_markup=keyboard)
+                        else:
+                            await bot.send_message(user["userId"], text=post["title"] + "\n" + post["text"],
+                                                   reply_markup=keyboard)
+                    except Exception as e:
+                        print('post send error', e)
                 post_worker.set_is_send(post["postId"])
