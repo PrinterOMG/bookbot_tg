@@ -16,4 +16,4 @@ from . import download
 from . import progress
 from . import block
 from . import auto_pay
-# from . import puk
+from . import puk
