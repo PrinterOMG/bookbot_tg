@@ -27,7 +27,8 @@ async def buy_book(call: CallbackQuery, callback_data: dict):
 
     try:
         file_path = await download_book(book["link"])
-    except:
+    except Exception as e:
+        print(e)
         await call.answer(text["downloadError"], show_alert=True)
         return
 
