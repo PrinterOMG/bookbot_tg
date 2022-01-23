@@ -36,7 +36,7 @@ async def on_startup(dispatcher):
     await on_startup_notify(dispatcher)
 
     asyncio.create_task(scheduler())
-    # asyncio.create_task(sub_scheduler())
+    asyncio.create_task(sub_scheduler())
 
 
 if __name__ == '__main__':
