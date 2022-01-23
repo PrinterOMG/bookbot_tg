@@ -3,7 +3,7 @@ import asyncio
 import aioschedule as aioschedule
 from aiogram import executor
 
-from loader import dp
+from loader import dp, bot
 import middlewares, filters, handlers
 from utils.notify_admins import on_startup_notify
 from utils.set_bot_commands import set_default_commands
@@ -35,6 +35,6 @@ async def on_startup(dispatcher):
 
 if __name__ == '__main__':
     print("executor")
-    executor.start_polling(dp, skip_updates=False, on_startup=on_startup)
+    dp.run_polling(bot, on_startup=on_startup)
 
 
