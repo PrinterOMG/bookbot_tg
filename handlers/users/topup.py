@@ -12,6 +12,7 @@ from .navigation import send_balance, send_subscribes_menu
 
 @dp.callback_query_handler(check_callback.filter())
 async def check_pay(call: CallbackQuery, callback_data: dict):
+    print(call)
     order_id = callback_data["order_id"]
     what = callback_data["what"]
     amount = callback_data["amount"]

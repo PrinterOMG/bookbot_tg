@@ -7,6 +7,7 @@ from keyboards.inline.callbacks import buy_subscribe_callback
 
 @dp.callback_query_handler(buy_subscribe_callback.filter())
 async def send_sub_payment(call: CallbackQuery, callback_data: dict):
+    print(call)
     text = languages_worker.get_text_on_user_language(call.from_user.id, "paymentMenu, alreadySubError")
     is_sub = subscribes_worker.is_user_have_active_subscribe(call.from_user.id)
     if is_sub:

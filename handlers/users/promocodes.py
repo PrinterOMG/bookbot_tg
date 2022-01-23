@@ -9,6 +9,7 @@ from states.promocodes import PromoInput
 
 @dp.callback_query_handler(promo_callback.filter(action="cancel"))
 async def cancel_promo(call: CallbackQuery):
+    print(call)
     promo_worker.cancel_user_promocode(call.from_user.id)
 
     text = languages_worker.get_text_on_user_language(call.from_user.id, "cancelPromoOk")
@@ -19,6 +20,7 @@ async def cancel_promo(call: CallbackQuery):
 
 @dp.callback_query_handler(promo_callback.filter(action="use"))
 async def use_promocode(call: CallbackQuery, state: FSMContext):
+    print(call)
     text = languages_worker.get_text_on_user_language(call.from_user.id, "promoInput")
 
     await call.message.edit_text(text["promoInput"], reply_markup=await get_cancel_keyboard(call.from_user.id))

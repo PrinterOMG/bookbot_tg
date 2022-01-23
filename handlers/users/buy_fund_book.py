@@ -10,6 +10,7 @@ from .fundraising import send_fundraising_book_menu
 
 @dp.callback_query_handler(buy_fund_book_callback.filter())
 async def buy_fund_book(call: CallbackQuery, callback_data: dict):
+    print(call)
     text = languages_worker.get_text_on_user_language(call.from_user.id, "buyBookOk, buyBookError, balanceMenu, fundraisingMenu")
     book_id = callback_data["id"]
     price = int(callback_data["price"])

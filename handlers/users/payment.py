@@ -14,6 +14,7 @@ from data.config import PAYMENTS_PROVIDER_TOKEN
 
 @dp.callback_query_handler(payment_callback.filter(what="topup"))
 async def payment(call: CallbackQuery, callback_data: dict):
+    print(call)
     text = languages_worker.get_text_on_user_language(call.from_user.id, "payMenu, payTitle, "
                                                                          "payDescription, telegramPayLimit")
     amount = int(callback_data["value"])
@@ -45,6 +46,7 @@ async def payment(call: CallbackQuery, callback_data: dict):
 
 @dp.callback_query_handler(payment_callback.filter(what="sub"))
 async def sub_payment(call: CallbackQuery, callback_data: dict):
+    print(call)
     text = languages_worker.get_text_on_user_language(call.from_user.id, "yoomoneyMenu, alreadySubError")
     sub_id = callback_data["sub_id"]
 

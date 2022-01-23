@@ -11,6 +11,7 @@ from .navigation import send_balance
 
 @dp.callback_query_handler(buy_book_callback.filter())
 async def buy_book(call: CallbackQuery, callback_data: dict):
+    print(call)
     book_id = int(callback_data["book_id"])
     user_balance = users_worker.get_balance(call.from_user.id)
 

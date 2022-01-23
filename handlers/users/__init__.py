@@ -1,19 +1,19 @@
-# from . import registration
-# from . import change_language
-# from . import navigation
-# from . import promocodes
-# from . import other
-# from . import subscribes
-# from . import balance
-# from . import search
-# from . import buy_book
-# from . import topup
-# from . import payment
-# from . import yoomoney_sub
-# from . import fundraising
-# from . import buy_fund_book
-# from . import download
-# from . import progress
-# from . import block
-# from . import auto_pay
-from . import puk
+from . import registration
+from . import change_language
+from . import navigation
+from . import promocodes
+from . import other
+from . import subscribes
+from . import balance
+from . import search
+from . import buy_book
+from . import topup
+from . import payment
+from . import yoomoney_sub
+from . import fundraising
+from . import buy_fund_book
+from . import download
+from . import progress
+from . import block
+from . import auto_pay
+# from . import puk
