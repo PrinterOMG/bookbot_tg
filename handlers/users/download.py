@@ -17,13 +17,13 @@ async def download_fund_book(call: CallbackQuery, callback_data: dict):
         await call.answer(text["fundNotEndError"], show_alert=True)
         return
 
-    await call.message.delete()
-
     try:
         file_path = await download_book(book["link"])
     except:
         await call.answer(text["downloadError"], show_alert=True)
         return
+
+    await call.message.delete()
 
     file = InputFile(file_path)
     await call.message.answer_document(file)
