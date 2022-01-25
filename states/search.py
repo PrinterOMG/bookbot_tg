@@ -79,7 +79,7 @@ async def book_input(message: Message, state: FSMContext):
                                  reply_markup=await get_move_keyboard(message.from_user.id, to="archive"))
     else:
         book_id = int(book_id)
-        book = get_book(text["bookFile"], book_id)
+        book = await get_book(text["bookFile"], book_id)
         print(book)
 
         book = text["bookArchiveFormat"].format(id=book_id, title=books["title"][book_id],
