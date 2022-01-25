@@ -82,10 +82,10 @@ async def book_input(message: Message, state: FSMContext):
         book = await get_book(text["bookFile"], book_id)
         print(book)
 
-        book = text["bookArchiveFormat"].format(id=book_id, title=books["title"][book_id],
-                                                genre=books["genre"][book_id],
-                                                author=books["author"][book_id], year=books["year"][book_id],
-                                                price=books["price"][book_id])
+        book = text["bookArchiveFormat"].format(id=book_id, title=book["title"],
+                                                genre=book["genre"],
+                                                author=book["author"], year=book["year"],
+                                                price=book["price"])
 
         await main_msg.edit_text(text["bookBuyMenu"].format(book=book),
                                  reply_markup=await get_book_buy_keyboard(message.from_user.id, book_id))
