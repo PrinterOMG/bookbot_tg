@@ -14,7 +14,7 @@ async def buy_book(call: CallbackQuery, callback_data: dict):
     user_balance = users_worker.get_balance(call.from_user.id)
 
     text = languages_worker.get_text_on_user_language(call.from_user.id,
-                                                      "buyBookError, buyBookOk, balanceMenu, mainMenu, bookFile, downloadError, downloadResult")
+                                                      "buyBookError, buyBookOk, balanceMenu, mainMenu, bookFile, downloadResult")
 
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
         [
