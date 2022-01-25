@@ -39,11 +39,14 @@ async def check_pay(call: CallbackQuery, callback_data: dict):
 
             users_worker.add_to_deposit(call.from_user.id, amount)
             users_worker.update_sub_time(call.from_user.id, sub_type)
+            users_worker.update_sub_status(call.from_user.id, 3)  # 3 == active, 2 == expired
+
             statistic_worker.update_all_subs_counter()
             statistic_worker.update_no_buy_users()
             statistic_worker.update_interrupt_payments("-")
 
             sub_prices, duration = promo_worker.get_user_discount(call.from_user.id)
+
             if sub_prices and (int(sub_type) in sub_prices):
                 promo_worker.use_promocode(call.from_user.id)
 

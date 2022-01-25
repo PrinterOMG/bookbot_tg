@@ -43,4 +43,5 @@ async def sub_update():
                     await bot.send_message(user_id, text=text["successAutoPay"], reply_markup=keyboard)
                     continue
             subscribes_worker.make_is_active_false(user_id)
+            users_worker.update_sub_status(user_id, 2)  # 3 == active, 2 == expired
             await bot.send_message(user_id, text=text["subscribeOff"], reply_markup=keyboard)

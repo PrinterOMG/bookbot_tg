@@ -147,6 +147,11 @@ class UsersWorker(DatabaseCore):
 
         return response[0]["paymentId"]
 
+    def update_sub_status(self, user_id, action):
+        sql = f"UPDATE BookBotAdmin_users SET subscribeStatus={action} WHERE userId={user_id}"
+
+        self.send_query(sql)
+
     def get_payed_books(self, user_id):
         sql = f"SELECT buyBooks FROM BookBotAdmin_users WHERE userId={user_id}"
 
