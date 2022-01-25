@@ -151,3 +151,8 @@ class UsersWorker(DatabaseCore):
         sql = f"UPDATE BookBotAdmin_users SET subscribeStatus={action} WHERE userId={user_id}"
 
         self.send_query(sql)
+
+    def update_not_end_payment(self, user_id, action):
+        sql = f"UPDATE BookBotAdmin_users SET notEndPayment={action} WHERE userId={user_id}"
+
+        self.send_query(sql)
