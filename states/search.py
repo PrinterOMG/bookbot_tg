@@ -6,7 +6,7 @@ from aiogram.dispatcher import FSMContext
 
 from loader import dp, languages_worker
 from keyboards.inline import get_move_keyboard, get_cancel_keyboard, get_book_buy_keyboard
-from utils.csv_worker import search, create_txt_with_books
+from utils.csv_worker import search, create_txt_with_books, get_book
 
 
 class ArchiveBookBuy(StatesGroup):
@@ -72,13 +72,15 @@ async def book_input(message: Message, state: FSMContext):
     main_msg = (await state.get_data("main_msg"))["main_msg"]
 
     text = languages_worker.get_text_on_user_language(message.from_user.id,
-                                                      "bookInputError, bookBuyMenu, bookArchiveFormat")
+                                                      "bookFile, bookInputError, bookBuyMenu, bookArchiveFormat")
 
     if not book_id.isdigit() or (int(book_id) not in books["id"].values()):
         await main_msg.edit_text(text["bookInputError"],
                                  reply_markup=await get_move_keyboard(message.from_user.id, to="archive"))
     else:
         book_id = int(book_id)
+        book = get_book(text["bookFile"], book_id)
+        print(book)
 
         book = text["bookArchiveFormat"].format(id=book_id, title=books["title"][book_id],
                                                 genre=books["genre"][book_id],
