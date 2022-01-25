@@ -8,6 +8,7 @@ from utils.yoomoney_helper import make_auto_payment_init
 
 @dp.callback_query_handler(yoomoney_sub_callback.filter())
 async def yoomoney_sub_payment(call: CallbackQuery, callback_data: dict):
+    print(call)
     method = callback_data["method"]
     amount = callback_data["amount"]
     sub_id = callback_data["sub_id"]

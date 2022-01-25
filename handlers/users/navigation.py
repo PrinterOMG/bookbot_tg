@@ -10,6 +10,7 @@ from states.make_question import QuestionInput
 
 @dp.message_handler(commands=["menu"])
 async def send_menu(message: Message):
+    print(message)
     text = languages_worker.get_text_on_user_language(message.from_user.id, "mainMenu")
 
     last_menu = users_worker.get_last_menu(message.from_user.id)
@@ -26,6 +27,7 @@ async def send_menu(message: Message):
 
 @dp.callback_query_handler(navigation_callback.filter(to="main"))
 async def send_main_menu(call: CallbackQuery):
+    print(call)
     text = languages_worker.get_text_on_user_language(call.from_user.id, "mainMenu")
 
     await call.message.edit_text(text["mainMenu"], reply_markup=await get_main_keyboard(call.from_user.id))
@@ -34,6 +36,7 @@ async def send_main_menu(call: CallbackQuery):
 
 @dp.callback_query_handler(navigation_callback.filter(to="subscribes"))
 async def send_subscribes_menu(call: CallbackQuery):
+    print(call)
     user_id = call.from_user.id
     text = languages_worker.get_text_on_user_language(user_id,
                                                       "subscribesMenu, activeSub, noSub, expiredSub, autoPayOff, autoPayOn")
@@ -61,6 +64,7 @@ async def send_subscribes_menu(call: CallbackQuery):
 
 @dp.callback_query_handler(navigation_callback.filter(to="info"))
 async def send_info(call: CallbackQuery):
+    print(call)
     text = languages_worker.get_text_on_user_language(call.from_user.id, "info")
 
     await call.message.edit_text(text["info"], reply_markup=await get_move_keyboard(call.from_user.id))
@@ -69,6 +73,7 @@ async def send_info(call: CallbackQuery):
 
 @dp.callback_query_handler(navigation_callback.filter(to="balance"))
 async def send_balance(call: CallbackQuery):
+    print(call)
     text = languages_worker.get_text_on_user_language(call.from_user.id, "balanceMenu, activeSub, noSub, expiredSub")
     is_sub = subscribes_worker.is_user_have_active_subscribe(call.from_user.id)
 
@@ -89,6 +94,7 @@ async def send_balance(call: CallbackQuery):
 
 @dp.callback_query_handler(navigation_callback.filter(to="question"))
 async def send_question_input(call: CallbackQuery, state: FSMContext):
+    print(call)
     await state.update_data(main_msg=call.message)
     await QuestionInput.input.set()
 
@@ -100,6 +106,7 @@ async def send_question_input(call: CallbackQuery, state: FSMContext):
 
 @dp.callback_query_handler(navigation_callback.filter(to="archive"))
 async def send_archive_search(call: CallbackQuery):
+    print(call)
     text = languages_worker.get_text_on_user_language(call.from_user.id, "booksArchiveMenu")
 
     await call.message.edit_text(text["booksArchiveMenu"], reply_markup=await get_search_keyboard(call.from_user.id))
@@ -108,6 +115,7 @@ async def send_archive_search(call: CallbackQuery):
 
 @dp.callback_query_handler(navigation_callback.filter(to="fundraising"))
 async def send_fundraising_menu(call: CallbackQuery):
+    print(call)
     text = languages_worker.get_text_on_user_language(call.from_user.id, "fundraisingMenu")
 
     await call.message.edit_text(text["fundraisingMenu"], reply_markup=await get_fundraising_keyboard(call.from_user.id))

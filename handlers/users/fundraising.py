@@ -7,6 +7,7 @@ from keyboards.inline import get_fund_book_keyboard
 
 @dp.callback_query_handler(fundraising_callback.filter())
 async def send_fundraising_book_menu(call: CallbackQuery, callback_data: dict):
+    print(call)
     text = languages_worker.get_text_on_user_language(call.from_user.id, "fundBookMenu, progressFormat")
     show_progress = users_worker.get_show_progress(call.from_user.id)
 

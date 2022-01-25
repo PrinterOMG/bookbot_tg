@@ -7,6 +7,7 @@ from .fundraising import send_fundraising_book_menu
 
 @dp.callback_query_handler(show_progress_callback.filter())
 async def change_show_progress(call: CallbackQuery, callback_data: dict):
+    print(call)
     show_progress = users_worker.get_show_progress(call.from_user.id)
     book_id = callback_data["book_id"]
     text = languages_worker.get_text_on_user_language(call.from_user.id, "progressOn, progressOff")

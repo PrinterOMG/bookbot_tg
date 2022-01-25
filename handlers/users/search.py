@@ -9,6 +9,7 @@ from states.search import ArchiveBookBuy
 
 @dp.callback_query_handler(search_callback.filter())
 async def send_search_input(call: CallbackQuery, callback_data: dict, state: FSMContext):
+    print(call)
     await state.update_data(main_msg=call.message, type=callback_data["type"])
     await ArchiveBookBuy.search_input.set()
 

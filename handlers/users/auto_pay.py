@@ -7,6 +7,7 @@ from .navigation import send_subscribes_menu
 
 @dp.callback_query_handler(auto_pay_callback.filter())
 async def auto_pay(call: CallbackQuery):
+    print(call)
     user_id = call.from_user.id
     text = languages_worker.get_text_on_user_language(user_id, "autoPayOn, autoPayOff")
     is_auto_pay = users_worker.is_auto_pay(user_id)

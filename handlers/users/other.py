@@ -7,6 +7,7 @@ from keyboards.inline import get_main_keyboard
 
 @dp.callback_query_handler(text="cancel", state="*")
 async def cancel_callback(call: CallbackQuery, state: FSMContext):
+    print(call)
     current_state = await state.get_state()
     if current_state is None:
         return
@@ -19,5 +20,6 @@ async def cancel_callback(call: CallbackQuery, state: FSMContext):
 
 @dp.callback_query_handler(text="close")
 async def close_message(call: CallbackQuery):
+    print(call)
     await call.message.delete()
     await call.answer()

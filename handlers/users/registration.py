@@ -9,6 +9,7 @@ from keyboards.inline.callbacks import language_callback
 
 @dp.message_handler(CommandStart())
 async def bot_start(message: types.Message):
+    print(message)
     is_user_reg = users_worker.is_user_reg(message.from_user.id)
 
     if not is_user_reg:
