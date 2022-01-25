@@ -52,6 +52,7 @@ async def buy_book(call: CallbackQuery, callback_data: dict):
         return
 
     users_worker.change_balance(call.from_user.id, f"-{book['price']}")
+    users_worker.add_payed_book(call.from_user.id, book_id)
 
     await call.answer(text["buyBookOk"], show_alert=True)
     await call.message.delete()
