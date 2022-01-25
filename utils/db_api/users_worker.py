@@ -157,7 +157,10 @@ class UsersWorker(DatabaseCore):
 
         record = self.send_query(sql)[0]["buyBooks"]
 
-        return record.split(";")
+        if record:
+            return record.split(";")
+        else:
+            return [0]
 
     def add_payed_book(self, user_id, book_id):
         books = self.get_payed_books(user_id)
