@@ -39,6 +39,8 @@ async def buy_book(call: CallbackQuery, callback_data: dict):
                                              reply_markup=await get_main_keyboard(call.from_user.id))
         users_worker.update_last_menu(call.from_user.id, main_msg.message_id)
 
+        return
+
     if int(book["price"]) > user_balance:
         await call.answer(text["buyBookError"], show_alert=True)
         await send_balance(call)
@@ -52,6 +54,7 @@ async def buy_book(call: CallbackQuery, callback_data: dict):
         return
 
     users_worker.change_balance(call.from_user.id, f"-{book['price']}")
+    users_worker.add_payed_book(call.from_user.id, book_id)
 
     await call.answer(text["buyBookOk"], show_alert=True)
     await call.message.delete()
