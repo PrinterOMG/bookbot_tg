@@ -29,6 +29,7 @@ async def search_input(message: Message, state: FSMContext):
     if result["title"]:
         books = list()
         for i in result["title"].keys():
+            id = result["id"][i]
             title = result["title"][i]
             author = result["author"][i]
             genre = result["genre"][i]
@@ -36,7 +37,7 @@ async def search_input(message: Message, state: FSMContext):
             price = result["price"][i]
 
             books.append(
-                text["bookArchiveFormat"].format(id=i + 1, title=title, author=author, genre=genre, year=year,
+                text["bookArchiveFormat"].format(id=id, title=title, author=author, genre=genre, year=year,
                                                  price=price))
 
         books = "\n".join(books)
@@ -73,13 +74,13 @@ async def book_input(message: Message, state: FSMContext):
     text = languages_worker.get_text_on_user_language(message.from_user.id,
                                                       "bookInputError, bookBuyMenu, bookArchiveFormat")
 
-    if not book_id.isdigit() or (int(book_id) - 1 not in books["title"]):
+    if not book_id.isdigit() or (int(book_id) not in books["id"]):
         await main_msg.edit_text(text["bookInputError"],
                                  reply_markup=await get_move_keyboard(message.from_user.id, to="archive"))
     else:
-        book_id = int(book_id) - 1
+        book_id = int(book_id)
 
-        book = text["bookArchiveFormat"].format(id=book_id + 1, title=books["title"][book_id],
+        book = text["bookArchiveFormat"].format(id=book_id, title=books["title"][book_id],
                                                 genre=books["genre"][book_id],
                                                 author=books["author"][book_id], year=books["year"][book_id],
                                                 price=books["price"][book_id])
