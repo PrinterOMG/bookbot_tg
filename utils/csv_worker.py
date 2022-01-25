@@ -16,8 +16,9 @@ async def get_book(filename, book_id):
 
     result = reader[reader.id == book_id].to_dict()
     print(result)
+    i = get_key(result["id"], book_id)
     for key in result.keys():
-        result[key] = result[key][book_id]
+        result[key] = result[key][i]
 
     return result
 
@@ -29,3 +30,9 @@ async def create_txt_with_books(books, user_id):
         await out.flush()
 
     return filename
+
+
+def get_key(d, value):
+    for k, v in d.items():
+        if int(v) == int(value):
+            return k
