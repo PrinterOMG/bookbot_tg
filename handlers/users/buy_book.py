@@ -1,7 +1,7 @@
 from aiogram.types import CallbackQuery, InputFile
 import os
 
-from loader import dp, users_worker, languages_worker, statistic_worker, bot
+from loader import dp, users_worker, languages_worker, statistic_worker, archive_worker
 from keyboards.inline.callbacks import buy_book_callback
 from keyboards.inline import get_balance_keyboard, get_main_keyboard
 from utils.yadisk_helper import download_book
@@ -59,6 +59,7 @@ async def buy_book(call: CallbackQuery, callback_data: dict):
     await call.answer(text["buyBookOk"], show_alert=True)
     await call.message.delete()
 
+    archive_worker.update_buy(book_id)
     statistic_worker.update_archive_books_count()
     statistic_worker.update_archive_books_sum(book['price'])
 
