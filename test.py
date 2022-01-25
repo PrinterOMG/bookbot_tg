@@ -14,4 +14,4 @@ from loader import subscribes_worker, users_worker
 
 # 535105735
 
-print(users_worker.get_payment_method("535105735"))
+print(users_worker.register_new_user("5049994775", "Shmatushka", "1", "NULL", "Shmatushka"))
