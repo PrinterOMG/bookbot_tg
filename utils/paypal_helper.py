@@ -72,7 +72,7 @@ def create_plan_with_promo(product_id, amount_often, amount_promo, duration):
                     "interval_unit": "MONTH",
                     "interval_count": duration
                 },
-                "tenure_type": "REGULAR",
+                "tenure_type": "TRIAL",
                 "sequence": 1,
                 "total_cycles": 1,
                 "pricing_scheme": {
@@ -97,7 +97,14 @@ def create_plan_with_promo(product_id, amount_often, amount_promo, duration):
                     }
                 }
             }
-        ]
+        ],
+        "payment_preferences": {
+
+            "auto_bill_outstanding": "true",
+
+            "payment_failure_threshold": 0
+
+        }
     })
 
     response = client.execute(request)
@@ -129,7 +136,14 @@ def create_plan_without_promo(product_id, amount_often, duration):
                     }
                 }
             }
-        ]
+        ],
+        "payment_preferences": {
+
+            "auto_bill_outstanding": "true",
+
+            "payment_failure_threshold": 0
+
+        }
     })
 
     response = client.execute(request)
