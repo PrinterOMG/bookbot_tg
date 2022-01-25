@@ -15,6 +15,7 @@ async def get_book(filename, book_id):
     reader = pd.read_csv("../admin/" + filename, delimiter=";")
 
     result = reader[reader.id == book_id].to_dict()
+    print(result)
     for key in result.keys():
         result[key] = result[key][book_id]
 
