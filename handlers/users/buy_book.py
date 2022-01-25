@@ -39,6 +39,8 @@ async def buy_book(call: CallbackQuery, callback_data: dict):
                                              reply_markup=await get_main_keyboard(call.from_user.id))
         users_worker.update_last_menu(call.from_user.id, main_msg.message_id)
 
+        return
+
     if int(book["price"]) > user_balance:
         await call.answer(text["buyBookError"], show_alert=True)
         await send_balance(call)
