@@ -10,7 +10,7 @@ from keyboards.inline.callbacks import download_fund_book
 async def download_fund_book(call: CallbackQuery, callback_data: dict):
     print(call)
     book_id = int(callback_data["book_id"])
-    text = languages_worker.get_text_on_user_language(call.from_user.id, "mainMenu, fundNotEndError, closeButton")
+    text = languages_worker.get_text_on_user_language(call.from_user.id, "mainMenu, fundNotEndError, closeButton, downloadResult")
     book = books_worker.get_book(book_id)
 
     keyboard = InlineKeyboardMarkup(inline_keyboard=[
