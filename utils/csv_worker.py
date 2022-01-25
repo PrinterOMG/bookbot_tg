@@ -14,7 +14,7 @@ async def search(filename, s_type, value):
 async def get_book(filename, book_id):
     reader = pd.read_csv("../admin/" + filename, delimiter=";")
 
-    result = reader[reader.index == book_id].to_dict()
+    result = reader[reader.id == book_id].to_dict()
     for key in result.keys():
         result[key] = result[key][book_id]
 

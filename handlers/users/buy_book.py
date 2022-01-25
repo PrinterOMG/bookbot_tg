@@ -13,12 +13,31 @@ from .navigation import send_balance
 async def buy_book(call: CallbackQuery, callback_data: dict):
     print(call)
     book_id = int(callback_data["book_id"])
+    is_payed = int(callback_data["is_payed"])
     user_balance = users_worker.get_balance(call.from_user.id)
 
     text = languages_worker.get_text_on_user_language(call.from_user.id,
                                                       "buyBookError, buyBookOk, balanceMenu, mainMenu, bookFile, downloadError")
 
     book = await get_book(text["bookFile"], book_id)
+
+    if is_payed:
+        try:
+            file_path = await download_book(book["link"])
+        except Exception as e:
+            print(e)
+            await call.answer(text["downloadError"], show_alert=True)
+            return
+
+        await call.message.delete()
+
+        file = InputFile(file_path)
+        await call.message.answer_document(file)
+        os.remove(file_path)
+
+        main_msg = await call.message.answer(text=text["mainMenu"],
+                                             reply_markup=await get_main_keyboard(call.from_user.id))
+        users_worker.update_last_menu(call.from_user.id, main_msg.message_id)
 
     if int(book["price"]) > user_balance:
         await call.answer(text["buyBookError"], show_alert=True)

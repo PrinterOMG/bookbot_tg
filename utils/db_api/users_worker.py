@@ -146,3 +146,19 @@ class UsersWorker(DatabaseCore):
         response = self.send_query(sql)
 
         return response[0]["paymentId"]
+
+    def get_payed_books(self, user_id):
+        sql = f"SELECT buyBooks FROM BookBotAdmin_users WHERE userId={user_id}"
+
+        record = self.send_query(sql)[0]["buyBooks"]
+
+        return record.split(";")
+
+    def add_payed_book(self, user_id, book_id):
+        books = self.get_payed_books(user_id)
+        books.append(book_id)
+        books = ";".join(books)
+
+        sql = f"UPDATE BookBotAdmin_users SET buyBooks='{books}'"
+
+        self.send_query(sql)
