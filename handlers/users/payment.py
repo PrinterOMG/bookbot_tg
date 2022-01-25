@@ -2,7 +2,7 @@ import json
 
 from aiogram.types import CallbackQuery, LabeledPrice
 
-from loader import dp, languages_worker, bot, subscribes_worker, statistic_worker
+from loader import dp, languages_worker, bot, subscribes_worker, statistic_worker, users_worker
 from keyboards.inline.callbacks import payment_callback
 from keyboards.inline import get_pay_keyboard, get_yoomoney_pay_keyboard
 
@@ -63,5 +63,6 @@ async def sub_payment(call: CallbackQuery, callback_data: dict):
         pass  # only fixed prices for sub
     # maybe i cn generate it
     statistic_worker.update_interrupt_payments("+")
+    users_worker.update_not_end_payment(call.from_user.id, 1)
 
     await call.answer()

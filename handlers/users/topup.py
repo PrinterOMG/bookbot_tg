@@ -24,7 +24,10 @@ async def check_pay(call: CallbackQuery, callback_data: dict):
             users_worker.change_balance(call.from_user.id, f"+{amount}")
             await call.answer(text["payOk"], show_alert=True)
             await send_balance(call)
+
             statistic_worker.update_interrupt_payments("-")
+            users_worker.update_not_end_payment(call.from_user.id, 0)
+
             # TODO make payment operation worker
         else:
             await call.answer(text["payError"], show_alert=True)  # waiting_for_capture
@@ -43,7 +46,9 @@ async def check_pay(call: CallbackQuery, callback_data: dict):
 
             statistic_worker.update_all_subs_counter()
             statistic_worker.update_no_buy_users()
+
             statistic_worker.update_interrupt_payments("-")
+            users_worker.update_not_end_payment(call.from_user.id, 0)
 
             sub_prices, duration = promo_worker.get_user_discount(call.from_user.id)
 
@@ -63,7 +68,10 @@ async def check_pay(call: CallbackQuery, callback_data: dict):
                 users_worker.change_balance(call.from_user.id, f"+{amount}")
                 await call.answer(text["payOk"], show_alert=True)
                 await send_balance(call)
+
                 statistic_worker.update_interrupt_payments("-")
+                users_worker.update_not_end_payment(call.from_user.id, 0)
+
             else:
                 await call.answer(text["payError"], show_alert=True)
         else:
