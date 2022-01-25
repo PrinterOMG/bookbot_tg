@@ -2,14 +2,14 @@ import json
 
 from aiogram.types import CallbackQuery, LabeledPrice
 
-from loader import dp, languages_worker, bot, subscribes_worker, statistic_worker, users_worker
+from loader import dp, languages_worker, bot, subscribes_worker, statistic_worker, users_worker, subprices_worker
 from keyboards.inline.callbacks import payment_callback
 from keyboards.inline import get_pay_keyboard, get_yoomoney_pay_keyboard
 
 from utils.yoomoney_helper import make_onetime_payment
-from utils.paypal_helper import create_payment_paypal, create_sub_paypal_payment
+from utils.paypal_helper import create_payment_paypal, create_sub_paypal_payment, create_plan_with_promo, create_plan_without_promo
 
-from data.config import PAYMENTS_PROVIDER_TOKEN
+from data.config import PAYMENTS_PROVIDER_TOKEN, product_id
 
 
 @dp.callback_query_handler(payment_callback.filter(what="topup"))
@@ -60,8 +60,19 @@ async def sub_payment(call: CallbackQuery, callback_data: dict):
     if method == "yoomoney_sub":
         await call.message.edit_text(text["yoomoneyMenu"], reply_markup=await get_yoomoney_pay_keyboard(call.from_user.id, amount, sub_id))
     else:
-        pass  # only fixed prices for sub
-    # maybe i cn generate it
+        # generate plan capture plan id create sub send link
+        sub = subprices_worker.get_sub(sub_id)
+        duration = sub["duration"]
+        sub_amount = sub["value"]
+        if sub_amount != amount:
+            plan_id = create_plan_with_promo(product_id, sub_amount, amount, duration)
+        else:
+            plan_id = create_plan_without_promo(product_id, amount, duration)
+        link, sub_paypal_id = create_sub_paypal_payment(plan_id)
+        await call.message.edit_text(text["payMenu"],
+                                     reply_markup=await get_pay_keyboard(call.from_user.id, sub_paypal_id, link,
+                                                                         method, amount, sub_id))
+
     statistic_worker.update_interrupt_payments("+")
     users_worker.update_not_end_payment(call.from_user.id, 1)
 

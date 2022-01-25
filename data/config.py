@@ -16,6 +16,7 @@ DB_USER = env.str("DB_USER")
 client_id = env.str("client_id")
 client_secret = env.str("client_secret")
 return_url = env.str("return_url")
+product_id = env.str("product_id")
 
 # yoomoney
 account_id = "867452"

@@ -5,7 +5,7 @@ from loader import dp, languages_worker, users_worker, subscribes_worker, promo_
 
 from keyboards.inline.callbacks import check_callback
 
-from utils.paypal_helper import check_paypal_order, capture_onetime_order
+from utils.paypal_helper import check_paypal_order, capture_onetime_order, check_paypal_sub
 from utils.yoomoney_helper import check_payment
 from .navigation import send_balance, send_subscribes_menu
 
@@ -31,9 +31,9 @@ async def check_pay(call: CallbackQuery, callback_data: dict):
             # TODO make payment operation worker
         else:
             await call.answer(text["payError"], show_alert=True)  # waiting_for_capture
-    elif what in ("bank_card", "yoo_money"):
+    elif what in ("bank_card", "yoo_money", "paypal_sub"):
         status = check_payment(order_id)
-        if status == "succeeded":
+        if status == "succeeded" or status == "ACTIVE":
             if subscribes_worker.check_subscribe(call.from_user.id):
                 subscribes_worker.update_subscribe_record(call.from_user.id, sub_type)
             else:
@@ -59,7 +59,6 @@ async def check_pay(call: CallbackQuery, callback_data: dict):
             # TODO make payment operation worker
         else:
             await call.answer(text["payError"], show_alert=True)  # waiting_for_capture
-
     elif what == "paypal":
         status = check_paypal_order(order_id)
         if status == "APPROVED":

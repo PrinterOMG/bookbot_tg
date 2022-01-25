@@ -45,6 +45,114 @@ class SubscriptionActivate:
         return self
 
 
+class CreatePlan:
+    def __init__(self):
+        self.verb = "POST"
+        self.path = "/v1/billing/plans"
+        self.headers = {"Content-Type": "application/json"}
+        self.body = None
+
+    def prefer(self, prefer):
+        self.headers["Prefer"] = str(prefer)
+
+    def request_body(self, order):
+        self.body = order
+        return self
+
+
+def create_plan_with_promo(product_id, amount_often, amount_promo, duration):
+    request = CreatePlan()
+    request.request_body({
+        "name": "Bot subscribe",
+        "description": "Subscribe to bot",
+        "product_id": product_id,
+        "billing_cycles": [
+            {
+                "frequency": {
+                    "interval_unit": "MONTH",
+                    "interval_count": duration
+                },
+                "tenure_type": "TRIAL",
+                "sequence": 1,
+                "total_cycles": 1,
+                "pricing_scheme": {
+                    "fixed_price": {
+                        "value": amount_promo,
+                        "currency_code": "RUB"
+                    }
+                }
+            },
+            {
+                "frequency": {
+                    "interval_unit": "MONTH",
+                    "interval_count": duration
+                },
+                "tenure_type": "REGULAR",
+                "sequence": 2,
+                "total_cycles": 0,
+                "pricing_scheme": {
+                    "fixed_price": {
+                        "value": amount_often,
+                        "currency_code": "RUB"
+                    }
+                }
+            }
+        ],
+        "payment_preferences": {
+
+            "auto_bill_outstanding": "true",
+
+            "payment_failure_threshold": 0
+
+        }
+    })
+
+    response = client.execute(request)
+    print(response.result.links[0].href)
+    print(response.result.id)
+
+    return response.result.id
+
+
+def create_plan_without_promo(product_id, amount_often, duration):
+    request = CreatePlan()
+    request.request_body({
+        "name": "Bot subscribe",
+        "description": "Subscribe to bot",
+        "product_id": product_id,
+        "billing_cycles": [
+            {
+                "frequency": {
+                    "interval_unit": "MONTH",
+                    "interval_count": duration
+                },
+                "tenure_type": "REGULAR",
+                "sequence": 1,
+                "total_cycles": 0,
+                "pricing_scheme": {
+                    "fixed_price": {
+                        "value": amount_often,
+                        "currency_code": "RUB"
+                    }
+                }
+            }
+        ],
+        "payment_preferences": {
+
+            "auto_bill_outstanding": "true",
+
+            "payment_failure_threshold": 0
+
+        }
+    })
+
+    response = client.execute(request)
+    print(response.result.links[0].href)
+    print(response.result.id)
+
+    return response.result.id
+
+
 def create_sub_paypal_payment(plan_id: str):
     request = SubscriptionRequest()
     request.request_body({
