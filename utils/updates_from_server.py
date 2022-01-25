@@ -43,6 +43,9 @@ async def update():
                     except Exception as e:
                         print('post send error', e)
                 post_worker.set_is_send(post["postId"])
+            else:
+                print("no users")
+                post_worker.set_is_send(post["postId"])
         else:
             print("no_filter")
             users = users_worker.get_all_users()
