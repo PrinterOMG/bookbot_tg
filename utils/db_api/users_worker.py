@@ -164,7 +164,7 @@ class UsersWorker(DatabaseCore):
 
     def add_payed_book(self, user_id, book_id):
         books = self.get_payed_books(user_id)
-        books.append(book_id)
+        books.append(str(book_id))
         books = ";".join(books)
 
         sql = f"UPDATE BookBotAdmin_users SET buyBooks='{books}'"
