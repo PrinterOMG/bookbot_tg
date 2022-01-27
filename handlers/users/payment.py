@@ -15,8 +15,7 @@ from data.config import PAYMENTS_PROVIDER_TOKEN, product_id
 @dp.callback_query_handler(payment_callback.filter(what="topup"))
 async def payment(call: CallbackQuery, callback_data: dict):
     print(call)
-    text = languages_worker.get_text_on_user_language(call.from_user.id, "payMenu, payTitle, "
-                                                                         "payDescription, telegramPayLimit")
+    text = languages_worker.get_text_on_user_language(call.from_user.id, "payTitle, payDescription, telegramPayLimit")
     amount = int(callback_data["value"])
     method = callback_data["method"]
     if method == "yoomoney" or method == "paypal":
@@ -47,7 +46,7 @@ async def payment(call: CallbackQuery, callback_data: dict):
 @dp.callback_query_handler(payment_callback.filter(what="sub"))
 async def sub_payment(call: CallbackQuery, callback_data: dict):
     print(call)
-    text = languages_worker.get_text_on_user_language(call.from_user.id, "yoomoneyMenu, alreadySubError")
+    text = languages_worker.get_text_on_user_language(call.from_user.id, "yoomoneyMenu, alreadySubError, payMenu")
     sub_id = callback_data["sub_id"]
 
     is_sub = subscribes_worker.is_user_have_active_subscribe(call.from_user.id)
