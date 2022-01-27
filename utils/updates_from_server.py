@@ -26,6 +26,7 @@ async def update():
 
         cur_date = datetime.datetime.now()
         print(cur_date)
+        print(type(cur_date))
         if post["sendDate"] < cur_date:
             continue
 
