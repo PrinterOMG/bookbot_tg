@@ -11,3 +11,4 @@ from .operations import OperationsWorker
 from .post_worker import PostWorker
 from .filter_worker import FilterWorker
 from .statistic_worker import StatisticWorker
+from .archive_worker import ArchiveWorker

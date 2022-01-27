@@ -4,7 +4,7 @@ from aiogram.types import Message, InputFile, InputMedia
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.dispatcher import FSMContext
 
-from loader import dp, languages_worker
+from loader import dp, languages_worker, archive_worker
 from keyboards.inline import get_move_keyboard, get_cancel_keyboard, get_book_buy_keyboard
 from utils.csv_worker import search, create_txt_with_books, get_book
 
@@ -82,13 +82,19 @@ async def book_input(message: Message, state: FSMContext):
         book = await get_book(text["bookFile"], book_id)
         print(book)
 
-        book = text["bookArchiveFormat"].format(id=book_id, title=book["title"],
-                                                genre=book["genre"],
-                                                author=book["author"], year=book["year"],
-                                                price=book["price"])
+        book_str = text["bookArchiveFormat"].format(id=book_id, title=book["title"],
+                                                    genre=book["genre"],
+                                                    author=book["author"], year=book["year"],
+                                                    price=book["price"])
 
-        await main_msg.edit_text(text["bookBuyMenu"].format(book=book),
+        await main_msg.edit_text(text["bookBuyMenu"].format(book=book_str),
                                  reply_markup=await get_book_buy_keyboard(message.from_user.id, book_id))
+
+        is_book = archive_worker.is_book_in_base(book_id)
+        if not is_book:
+            archive_worker.add_book(book)
+
+        archive_worker.update_appeal(book_id)
 
     await state.finish()
     await message.delete()
