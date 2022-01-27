@@ -1,3 +1,5 @@
+import datetime
+
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, InputFile
 
 from loader import questions_worker, bot, languages_worker, post_worker, users_worker, filter_worker
@@ -20,6 +22,15 @@ async def update():
     posts = post_worker.get_posts()
     for post in posts:
         print(post)
+        print(post["sendDate"])
+
+        date = datetime.datetime.strptime(post["sendDate"], "%Y-%m-%d %H:%i:%s")
+        cur_date = datetime.datetime.now()
+        print(date)
+        print(cur_date)
+        if date < cur_date:
+            continue
+
         if post["filter_id"]:
             print("with_filter")
             filters = filter_worker.get_filter(post["filter_id"])
