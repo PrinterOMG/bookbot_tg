@@ -32,7 +32,10 @@ async def check_pay(call: CallbackQuery, callback_data: dict):
         else:
             await call.answer(text["payError"], show_alert=True)  # waiting_for_capture
     elif what in ("bank_card", "yoo_money", "paypal_sub"):
-        status = check_payment(order_id)
+        if what == "paypal_sub":
+            status = check_paypal_sub(order_id)
+        else:
+            status = check_payment(order_id)
         if status == "succeeded" or status == "ACTIVE":
             if subscribes_worker.check_subscribe(call.from_user.id):
                 subscribes_worker.update_subscribe_record(call.from_user.id, sub_type)
