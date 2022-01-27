@@ -24,18 +24,15 @@ async def update():
         print(post)
         print(post["sendDate"])
 
-        # date = datetime.datetime.strptime(post["sendDate"], "%Y-%m-%d %H:%i:%s")
-        date = post["sendDate"]
         cur_date = datetime.datetime.now()
-        print(date)
         print(cur_date)
-        if date < cur_date:
+        if post["sendDate"] < cur_date:
             continue
 
         if post["filter_id"]:
             print("with_filter")
             filters = filter_worker.get_filter(post["filter_id"])
-            users = users_worker.get_filtered_users(filters, post["sendDate"])
+            users = users_worker.get_filtered_users(filters)
             if users:
                 text = languages_worker.get_text(filters["languageId_id"], "closeButton")
                 for user_id in users:
