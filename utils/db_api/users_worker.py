@@ -1,3 +1,5 @@
+import datetime
+
 from .db_core import DatabaseCore
 
 
@@ -94,6 +96,8 @@ class UsersWorker(DatabaseCore):
 
         if send_date:
             sql_add.append(f"STR_TO_DATE({send_date}, '%Y-%m-%d %H:%i:%s') > NOW()")
+        print(send_date)
+        print(datetime.datetime.now())
 
         sql_add.append(f'balance>={filters["balanceFrom"]}')
         if int(filters["balanceTo"]):
