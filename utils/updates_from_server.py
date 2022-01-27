@@ -24,7 +24,8 @@ async def update():
         print(post)
         print(post["sendDate"])
 
-        date = datetime.datetime.strptime(post["sendDate"], "%Y-%m-%d %H:%i:%s")
+        date = datetime.datetimeime.strptime(post["sendDate"], "%Y-%m-%d %H:%i:%s")
+        date = post["sendDate"]
         cur_date = datetime.datetime.now()
         print(date)
         print(cur_date)
