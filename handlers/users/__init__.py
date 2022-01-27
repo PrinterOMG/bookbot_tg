@@ -17,3 +17,4 @@ from . import progress
 from . import block
 from . import auto_pay
 # from . import puk
+from . import telegram_payment
