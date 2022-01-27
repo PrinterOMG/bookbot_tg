@@ -24,7 +24,7 @@ async def update():
         print(post)
         print(post["sendDate"])
 
-        cur_date = datetime.datetime.now()
+        cur_date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         print(cur_date)
         print(type(cur_date))
         if post["sendDate"] < cur_date:
