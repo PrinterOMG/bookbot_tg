@@ -23,7 +23,7 @@ async def update():
         if post["filter_id"]:
             print("with_filter")
             filters = filter_worker.get_filter(post["filter_id"])
-            users = users_worker.get_filtered_users(filters)
+            users = users_worker.get_filtered_users(filters, post["sendDate"])
             if users:
                 text = languages_worker.get_text(filters["languageId_id"], "closeButton")
                 for user_id in users:

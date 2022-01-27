@@ -85,12 +85,15 @@ class UsersWorker(DatabaseCore):
 
         self.send_query(sql)
 
-    def get_filtered_users(self, filters):
+    def get_filtered_users(self, filters, send_date):
         sql_add = list()
 
         sql_add.append(f"languageId_id={filters['languageId_id']}")
         sql_add.append(f'subscribeStatus_id={filters["subscribeStatus_id"]}')
         sql_add.append(f'notEndPayment={filters["notEndPayment"]}')
+
+        if send_date:
+            sql_add.append(f"STR_TO_DATE({send_date}, '%Y-%m-%d %H:%i:%s') > NOW()")
 
         sql_add.append(f'balance>={filters["balanceFrom"]}')
         if int(filters["balanceTo"]):
