@@ -10,7 +10,7 @@ async def tg_payment(call: CallbackQuery, callback_data: dict):
     user_id = callback_data["user_id"]
     amount = callback_data["amount"]
 
-    text = languages_worker.get_text_on_user_language(user_id, "payTitle")
+    text = languages_worker.get_text_on_user_language(user_id, "payTitle, payDescription")
 
     prices = [
         LabeledPrice(label=text["payTitle"], amount=amount * 100),
