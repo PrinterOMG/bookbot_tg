@@ -13,7 +13,7 @@ async def tg_payment(call: CallbackQuery, callback_data: dict):
     text = languages_worker.get_text_on_user_language(user_id, "payTitle, payDescription")
 
     prices = [
-        LabeledPrice(label=text["payTitle"], amount=amount * 100),
+        LabeledPrice(label=text["payTitle"], amount=int(amount) * 100),
     ]
     await call.message.delete()
     await bot.send_invoice(call.from_user.id, title=text["payTitle"],
