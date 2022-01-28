@@ -22,7 +22,7 @@ async def update():
 
         cur_date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         cur_date = datetime.datetime.strptime(cur_date, "%Y-%m-%d %H:%M:%S")
-        if post["sendDate"] > cur_date:
+        if post["sendDate"] and (post["sendDate"] > cur_date):
             continue
 
         if post["filter_id"]:
