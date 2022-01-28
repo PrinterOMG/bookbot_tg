@@ -2,6 +2,7 @@ import datetime
 
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
+from keyboards.inline import get_close_keyboard
 from loader import bot, subscribes_worker, users_worker, subprices_worker, languages_worker
 from .yoomoney_helper import make_auto_payment, check_payment
 
@@ -17,14 +18,10 @@ async def sub_update():
 
             user_id = sub["user_id"]
             is_auto_pay = users_worker.is_auto_pay(user_id)
-            text = languages_worker.get_text_on_user_language(user_id, "closeButton, successAutoPay, "
+            text = languages_worker.get_text_on_user_language(user_id, "successAutoPay, "
                                                                        "subscribeOff")
 
-            keyboard = InlineKeyboardMarkup(inline_keyboard=[
-                [
-                    InlineKeyboardButton(text["closeButton"], callback_data="close")
-                ]
-            ])
+            keyboard = await get_close_keyboard(user_id, 0)
 
             if is_auto_pay:
                 sub_type = sub["subPriceId"]

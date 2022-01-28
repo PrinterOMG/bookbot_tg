@@ -2,7 +2,7 @@ from aiogram.types import CallbackQuery, InlineKeyboardMarkup, InlineKeyboardBut
 
 from loader import dp, users_worker, languages_worker, statistic_worker, archive_worker
 from keyboards.inline.callbacks import buy_book_callback
-from keyboards.inline import get_main_keyboard
+from keyboards.inline import get_main_keyboard, get_close_keyboard
 from utils.csv_worker import get_book
 from .navigation import send_balance
 
@@ -14,13 +14,9 @@ async def buy_book(call: CallbackQuery, callback_data: dict):
     user_balance = users_worker.get_balance(call.from_user.id)
 
     text = languages_worker.get_text_on_user_language(call.from_user.id,
-                                                      "buyBookError, buyBookOk, balanceMenu, mainMenu, bookFile, downloadResult, closeButton")
+                                                      "buyBookError, buyBookOk, balanceMenu, mainMenu, bookFile, downloadResult")
 
-    keyboard = InlineKeyboardMarkup(inline_keyboard=[
-        [
-            InlineKeyboardButton(text["closeButton"], callback_data="close")
-        ]
-    ])
+    keyboard = await get_close_keyboard(call.from_user.id, 0)
 
     book = await get_book(text["bookFile"], book_id)
 

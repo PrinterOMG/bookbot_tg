@@ -1,7 +1,7 @@
 from aiogram.types import CallbackQuery, InputFile, InlineKeyboardMarkup, InlineKeyboardButton
 import os
 
-from keyboards.inline import get_main_keyboard
+from keyboards.inline import get_main_keyboard, get_close_keyboard
 from loader import dp, languages_worker, books_worker, users_worker
 from keyboards.inline.callbacks import download_fund_book
 
@@ -10,14 +10,10 @@ from keyboards.inline.callbacks import download_fund_book
 async def download_fund_book(call: CallbackQuery, callback_data: dict):
     print(call)
     book_id = int(callback_data["book_id"])
-    text = languages_worker.get_text_on_user_language(call.from_user.id, "mainMenu, fundNotEndError, closeButton, downloadResult")
+    text = languages_worker.get_text_on_user_language(call.from_user.id, "mainMenu, fundNotEndError, downloadResult")
     book = books_worker.get_book(book_id)
 
-    keyboard = InlineKeyboardMarkup(inline_keyboard=[
-        [
-            InlineKeyboardButton(text["closeButton"], callback_data="close")
-        ]
-    ])
+    keyboard = await get_close_keyboard(call.from_user.id, 0)
 
     if not book["isDone"]:
         await call.answer(text["fundNotEndError"], show_alert=True)
