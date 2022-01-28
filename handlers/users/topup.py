@@ -7,7 +7,7 @@ from keyboards.inline.callbacks import check_callback
 
 from utils.paypal_helper import check_paypal_order, capture_onetime_order, check_paypal_sub
 from utils.yoomoney_helper import check_payment
-from .navigation import send_balance, send_subscribes_menu
+from .navigation import send_balance, send_subscribes_menu, send_main_menu
 
 
 @dp.callback_query_handler(check_callback.filter())
@@ -30,7 +30,9 @@ async def check_pay(call: CallbackQuery, callback_data: dict):
 
             # TODO make payment operation worker
         else:
-            await call.answer(text["payError"], show_alert=True)  # waiting_for_capture
+            await call.answer(text["payError"], show_alert=True)
+            await send_main_menu(call)
+            # waiting_for_capture
     elif what in ("bank_card", "yoo_money", "paypal_sub"):
         if what == "paypal_sub":
             status = check_paypal_sub(order_id)
@@ -76,8 +78,10 @@ async def check_pay(call: CallbackQuery, callback_data: dict):
 
             else:
                 await call.answer(text["payError"], show_alert=True)
+                await send_main_menu(call)
         else:
             await call.answer(text["payError"], show_alert=True)
+            await send_main_menu(call)
 
 
 @dp.pre_checkout_query_handler(lambda query: True)

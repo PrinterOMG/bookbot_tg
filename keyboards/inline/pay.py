@@ -13,9 +13,6 @@ async def get_pay_keyboard(user_id, order_id, link, what, amount, sub_id):
         ],
         [
             InlineKeyboardButton(text["checkPayButton"], callback_data=check_callback.new(what, order_id, amount, sub_id))
-        ],
-        [
-            InlineKeyboardButton(text["cancelButton"], callback_data=navigation_callback.new("main"))
         ]
     ]
 
