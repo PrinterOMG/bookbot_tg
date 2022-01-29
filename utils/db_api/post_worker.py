@@ -6,7 +6,7 @@ class PostWorker(DatabaseCore):
         print(self.send_query("SELECT NOW()"))
 
         sql = "SELECT * FROM BookBotAdmin_posts WHERE isSend=0 " \
-              "AND STR_TO_DATE(NOW(), '%Y-%m-%d %H:%i:%s') > STR_TO_DATE(sendDate, '%Y-%m-%d %H:%i:%s')"
+              "AND NOW() >= STR_TO_DATE(sendDate, '%Y-%m-%d %H:%i:%s')"
 
         response = self.send_query(sql)
 
