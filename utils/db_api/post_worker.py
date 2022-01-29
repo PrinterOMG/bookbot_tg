@@ -3,7 +3,10 @@ from .db_core import DatabaseCore
 
 class PostWorker(DatabaseCore):
     def get_posts(self):
-        sql = "SELECT * FROM BookBotAdmin_posts WHERE isSend=0"
+        print(self.send_query("SELECT NOW()"))
+
+        sql = "SELECT * FROM BookBotAdmin_posts WHERE isSend=0 " \
+              "AND STR_TO_DATE(NOW(), '%Y-%m-%d %H:%i:%s') > STR_TO_DATE(sendDate, '%Y-%m-%d %H:%i:%s')"
 
         response = self.send_query(sql)
 
