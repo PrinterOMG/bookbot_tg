@@ -112,6 +112,8 @@ class UsersWorker(DatabaseCore):
               f"LEFT JOIN BookBotAdmin_subscribes subs on users.userId = subs.user_id " \
               f"WHERE {sql_add}"
 
+        print(sql)
+
         records = self.send_query(sql)
         if records:
             return [el["userId"] for el in records]
