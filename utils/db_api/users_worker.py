@@ -108,9 +108,7 @@ class UsersWorker(DatabaseCore):
 
         sql_add = " AND ".join(sql_add)
 
-        sql = f"SELECT userId FROM BookBotAdmin_users users " \
-              f"LEFT JOIN BookBotAdmin_subscribes subs on users.userId = subs.user_id " \
-              f"WHERE {sql_add}"
+        sql = f"SELECT userId FROM BookBotAdmin_users WHERE {sql_add}"
 
         print(sql)
 
