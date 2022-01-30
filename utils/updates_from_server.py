@@ -19,7 +19,7 @@ async def update():
     posts = post_worker.get_posts()
     for post in posts:
         print(post)
-        print(post["sendDate"])
+        print(post["sendDate"], "+3 hours")
 
         # cur_date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         # cur_date = datetime.datetime.strptime(cur_date, "%Y-%m-%d %H:%M:%S")
