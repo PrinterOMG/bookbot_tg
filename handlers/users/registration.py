@@ -40,8 +40,11 @@ async def bot_start(message: types.Message):
             users_worker.update_last_menu(message.from_user.id, main_msg.message_id)
             await message.delete()
         else:
-            text = languages_worker.get_text_on_user_language(message.from_user.id, "blockMenuInfo")
-            await message.answer(text["blockMenuInfo"], show_alert=True)
+            # text = languages_worker.get_text_on_user_language(message.from_user.id, "blockMenuInfo")
+            # main_msg = (await state.get_data("main_msg"))["main_msg"]
+            #
+            # await message.answer(text["blockMenuInfo"], show_alert=True)
+            await message.delete()
 
 
 @dp.callback_query_handler(language_callback.filter(action="reg"))
