@@ -82,6 +82,7 @@ async def check_pay(call: CallbackQuery, callback_data: dict):
         else:
             await call.answer(text["payError"], show_alert=True)
             await send_main_menu(call)
+    users_worker.update_is_paying(call.from_user.id, 0)
 
 
 @dp.pre_checkout_query_handler(lambda query: True)

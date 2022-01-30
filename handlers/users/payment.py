@@ -21,6 +21,7 @@ async def payment(call: CallbackQuery, callback_data: dict):
             order_id, link = make_onetime_payment(amount, text["payDescription"].format(amount=amount))
         else:
             link, order_id = create_payment_paypal(amount)
+        users_worker.update_is_paying(call.from_user.id, 1)
         await call.message.edit_text(text["payMenu"],
                                      reply_markup=await get_pay_keyboard(call.from_user.id, order_id, link, method, amount, 0))
     else:
@@ -73,5 +74,6 @@ async def sub_payment(call: CallbackQuery, callback_data: dict):
 
     statistic_worker.update_interrupt_payments("+")
     users_worker.update_not_end_payment(call.from_user.id, 1)
+    users_worker.update_is_paying(call.from_user.id, 1)
 
     await call.answer()
