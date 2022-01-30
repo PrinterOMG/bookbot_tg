@@ -5,8 +5,10 @@ class PostWorker(DatabaseCore):
     def get_posts(self):
         print(self.send_query("SELECT NOW()")[0]["NOW()"])
 
+        # sql = "SELECT * FROM BookBotAdmin_posts WHERE isSend=0 " \
+        #       "AND NOW() >= STR_TO_DATE(sendDate, '%Y-%m-%d %H:%i:%s')"
         sql = "SELECT * FROM BookBotAdmin_posts WHERE isSend=0 " \
-              "AND NOW() >= STR_TO_DATE(sendDate, '%Y-%m-%d %H:%i:%s')"
+              "AND NOW() >= DATE_ADD(sendDate, INTERVAL 3 HOUR)"
 
         response = self.send_query(sql)
 

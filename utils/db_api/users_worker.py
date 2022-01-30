@@ -108,9 +108,7 @@ class UsersWorker(DatabaseCore):
 
         sql_add = " AND ".join(sql_add)
 
-        sql = f"SELECT userId FROM BookBotAdmin_users users " \
-              f"LEFT JOIN BookBotAdmin_subscribes subs on users.userId = subs.user_id " \
-              f"WHERE {sql_add}"
+        sql = f"SELECT userId FROM BookBotAdmin_users WHERE {sql_add}"
 
         print(sql)
 
@@ -171,7 +169,7 @@ class UsersWorker(DatabaseCore):
         books.append(str(book_id))
         books = ";".join(books)
 
-        sql = f"UPDATE BookBotAdmin_users SET buyBooks='{books}'"
+        sql = f"UPDATE BookBotAdmin_users SET buyBooks='{books}' WHERE userId={user_id}"
 
         self.send_query(sql)
 
