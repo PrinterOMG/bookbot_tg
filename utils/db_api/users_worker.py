@@ -169,7 +169,7 @@ class UsersWorker(DatabaseCore):
         books.append(str(book_id))
         books = ";".join(books)
 
-        sql = f"UPDATE BookBotAdmin_users SET buyBooks='{books}'"
+        sql = f"UPDATE BookBotAdmin_users SET buyBooks='{books}' WHERE userId={user_id}"
 
         self.send_query(sql)
 
