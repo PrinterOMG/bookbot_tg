@@ -11,18 +11,24 @@ from states.make_question import QuestionInput
 @dp.message_handler(commands=["menu"])
 async def send_menu(message: Message):
     print(message)
-    text = languages_worker.get_text_on_user_language(message.from_user.id, "mainMenu")
+    is_paying = users_worker.get_is_paying(message.from_user.id)
 
-    last_menu = users_worker.get_last_menu(message.from_user.id)
-    if last_menu:
-        try:
-            await bot.delete_message(message.from_user.id, last_menu)
-        except:
-            pass
+    if not is_paying:
+        text = languages_worker.get_text_on_user_language(message.from_user.id, "mainMenu")
 
-    main_msg = await message.answer(text=text["mainMenu"], reply_markup=await get_main_keyboard(message.from_user.id))
-    users_worker.update_last_menu(message.from_user.id, main_msg.message_id)
-    await message.delete()
+        last_menu = users_worker.get_last_menu(message.from_user.id)
+        if last_menu:
+            try:
+                await bot.delete_message(message.from_user.id, last_menu)
+            except:
+                pass
+
+        main_msg = await message.answer(text=text["mainMenu"], reply_markup=await get_main_keyboard(message.from_user.id))
+        users_worker.update_last_menu(message.from_user.id, main_msg.message_id)
+        await message.delete()
+    else:
+        text = languages_worker.get_text_on_user_language(message.from_user.id, "blockMenuInfo")
+        await message.answer(text["blockMenuInfo"], show_alert=True)
 
 
 @dp.callback_query_handler(navigation_callback.filter(to="main"))
