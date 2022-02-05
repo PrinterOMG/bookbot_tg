@@ -15,7 +15,7 @@ async def tg_payment(call: CallbackQuery, callback_data: dict):
     prices = [
         LabeledPrice(label=text["payTitle"], amount=int(amount) * 100),
     ]
-    # await call.message.delete()
+    await call.message.delete()
     await bot.send_invoice(call.from_user.id, title=text["payTitle"],
                            description=text["payDescription"].format(amount=amount),
                            provider_token=PAYMENTS_PROVIDER_TOKEN,
