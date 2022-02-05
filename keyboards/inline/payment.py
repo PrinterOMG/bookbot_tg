@@ -12,9 +12,9 @@ async def get_payment_keyboard(user_id, for_subs=False, value=0, back="main", id
             [
                 InlineKeyboardButton(text["yookassaButton"], callback_data=payment_callback.new("sub", value, "yoomoney_sub", id))
             ],
-            [
-                InlineKeyboardButton(text["paypalButton"], callback_data=payment_callback.new("sub", value, "paypal_sub", id))
-            ]
+            # [
+            #     InlineKeyboardButton(text["paypalButton"], callback_data=payment_callback.new("sub", value, "paypal_sub", id))
+            # ]
         ]
     else:
         keyboard = [
@@ -24,9 +24,9 @@ async def get_payment_keyboard(user_id, for_subs=False, value=0, back="main", id
             [
                 InlineKeyboardButton(text["yookassaButton"], callback_data=payment_callback.new("topup", value, "yoomoney", 0))
             ],
-            [
-                InlineKeyboardButton(text["paypalButton"], callback_data=payment_callback.new("topup", value, "paypal", 0))
-            ],
+            # [
+            #     InlineKeyboardButton(text["paypalButton"], callback_data=payment_callback.new("topup", value, "paypal", 0))
+            # ],
             # [
             #     InlineKeyboardButton(text["sbpButton"], callback_data=payment_callback.new("topup", value, "sbp"))
             # ]
