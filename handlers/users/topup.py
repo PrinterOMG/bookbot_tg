@@ -96,7 +96,7 @@ async def process_successful_payment(message: Message):
                                                       "balanceMenu, balanceMenu, activeSub, noSub, expiredSub")
     users_worker.change_balance(message.chat.id, f"+{message.successful_payment.total_amount // 100}")
 
-    await message.delete()
+    # await message.delete()
 
     is_sub = subscribes_worker.is_user_have_active_subscribe(message.chat.id)
 
