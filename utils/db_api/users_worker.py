@@ -90,7 +90,8 @@ class UsersWorker(DatabaseCore):
     def get_filtered_users(self, filters):
         sql_add = list()
 
-        sql_add.append(f"languageId_id={filters['languageId_id']}")
+        if filters["languageId_id"]:
+            sql_add.append(f"languageId_id={filters['languageId_id']}")
         sql_add.append(f'subscribeStatus_id={filters["subscribeStatus_id"]}')
         sql_add.append(f'notEndPayment={filters["notEndPayment"]}')
 
