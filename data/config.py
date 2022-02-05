@@ -19,8 +19,8 @@ return_url = env.str("return_url")
 product_id = env.str("product_id")
 
 # yoomoney
-account_id = "867452"
-secret_key = "test_Bufj8lzLeS4W8ZFBRgJ7WmWunxJe_FeyvLcsZSJHAL4"
+account_id = env.str("shop_id")
+secret_key = env.str("secret_key")
 
 # telegram_payment
 PAYMENTS_PROVIDER_TOKEN = env.str("PAYMENTS_PROVIDER_TOKEN")
