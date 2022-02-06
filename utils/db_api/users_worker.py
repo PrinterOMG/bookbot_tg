@@ -92,7 +92,7 @@ class UsersWorker(DatabaseCore):
 
         if filters["languageId_id"]:
             sql_add.append(f"languageId_id={filters['languageId_id']}")
-        if filter["subscribeStatus_id"]:
+        if filters["subscribeStatus_id"]:
             sql_add.append(f'subscribeStatus_id={filters["subscribeStatus_id"]}')
         sql_add.append(f'notEndPayment={filters["notEndPayment"]}')
 
