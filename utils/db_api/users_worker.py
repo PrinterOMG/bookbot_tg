@@ -94,7 +94,8 @@ class UsersWorker(DatabaseCore):
             sql_add.append(f"languageId_id={filters['languageId_id']}")
         if filters["subscribeStatus_id"]:
             sql_add.append(f'subscribeStatus_id={filters["subscribeStatus_id"]}')
-        sql_add.append(f'notEndPayment={filters["notEndPayment"]}')
+        if filters["notEndPayment_id"] != 3:
+            sql_add.append(f'notEndPayment={filters["notEndPayment_id"]}')
 
         sql_add.append(f'balance>={filters["balanceFrom"]}')
         if int(filters["balanceTo"]):
