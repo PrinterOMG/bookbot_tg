@@ -63,7 +63,9 @@ async def check_pay(call: CallbackQuery, callback_data: dict):
             await send_subscribes_menu(call)
             # TODO make payment operation worker
         else:
-            await call.answer(text["payError"], show_alert=True)  # waiting_for_capture
+            await call.answer(text["payError"], show_alert=True)
+            await send_main_menu(call)
+            # waiting_for_capture
     elif what == "paypal":
         status = check_paypal_order(order_id)
         if status == "APPROVED":
