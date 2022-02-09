@@ -1,7 +1,7 @@
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 from loader import languages_worker
-from .callbacks import navigation_callback, payment_callback
+from .callbacks import navigation_callback, payment_callback, yoomoney_sub_callback
 
 
 async def get_payment_keyboard(user_id, for_subs=False, value=0, back="main", id=0):
@@ -9,8 +9,11 @@ async def get_payment_keyboard(user_id, for_subs=False, value=0, back="main", id
 
     if for_subs:
         keyboard = [
+            # [
+            #     InlineKeyboardButton(text["yookassaButton"], callback_data=payment_callback.new("sub", value, "yoomoney_sub", id))
+            # ],
             [
-                InlineKeyboardButton(text["yookassaButton"], callback_data=payment_callback.new("sub", value, "yoomoney_sub", id))
+                InlineKeyboardButton(text["yookassaButton"], callback_data=yoomoney_sub_callback.new("bank_card", value, id))
             ],
             # [
             #     InlineKeyboardButton(text["paypalButton"], callback_data=payment_callback.new("sub", value, "paypal_sub", id))
