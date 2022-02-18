@@ -18,9 +18,9 @@ async def get_payment_keyboard(user_id, for_subs=False, value=0, back="main", id
         ]
     else:
         keyboard = [
-            [
-                InlineKeyboardButton(text["telegramPayButton"], callback_data=payment_callback.new("topup", value, "telegram", 0))
-            ],
+            # [
+            #     InlineKeyboardButton(text["telegramPayButton"], callback_data=payment_callback.new("topup", value, "telegram", 0))
+            # ],
             [
                 InlineKeyboardButton(text["yookassaButton"], callback_data=payment_callback.new("topup", value, "yoomoney", 0))
             ],
